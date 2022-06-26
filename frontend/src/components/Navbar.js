@@ -37,6 +37,7 @@ export let Navbar = ({
           { balance !== undefined && (balance || 0).toString() }{ " " }
           { tokenData?.symbol }
         </Flex>
+
         { !selectedAddress && ConnectWalletBtn }
         { selectedAddress && <Button
           borderRadius={ 50 }
@@ -45,7 +46,17 @@ export let Navbar = ({
           onClick={ disconnectWallet }
         > Disconnect
         </Button> }
+
+        { !selectedAddress && <Button
+          borderRadius={ 50 }
+          px={ 6 }
+          type="button"
+          backgroundColor="grey.100"
+          ml={ 4 }
+          onClick={ () => window.open("https://www.youtube.com/watch?v=tWbLXoEPKnc") }
+        > Demo Video
+        </Button> }
       </Flex>
-    </Box>
+    </Box >
   );
 };

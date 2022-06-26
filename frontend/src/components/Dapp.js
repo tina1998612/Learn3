@@ -8,6 +8,7 @@ import { BigNumber, ethers } from "ethers";
 import contractAddress from "../contracts/contract-address.json";
 import CourseArtifact from "../contracts/Course.json";
 import CourseFactoryArtifact from "../contracts/CourseFactory.json";
+import QnABoardArtifact from "../contracts/QnABoard.json";
 import courseMockData from "../data/courses.json";
 
 // All the logic of this dapp is contained in the Dapp component.
@@ -309,6 +310,11 @@ export class Dapp extends React.Component {
       CourseFactoryArtifact.abi,
       this._provider.getSigner(0)
     );
+    // this._QA = new ethers.Contract(
+    //   contractAddress._QnABoard,
+    //   QnABoardArtifact.abi,
+    //   this._provider.getSigner(0)
+    // );
 
     window._courseFactory = this._courseFactory;
   }
@@ -532,6 +538,113 @@ export class Dapp extends React.Component {
       // if (receipt.status === 0) {
       //   throw new Error("Transaction failed");
       // }
+    } catch (error) {
+      if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+        return;
+      }
+
+      console.error(error);
+      this.setState({ transactionError: error });
+    } finally {
+      this.setState({ txBeingSent: undefined });
+    }
+  }
+  async _postQ(selectedCourse, question) {
+    try {
+      this._dismissTransactionError();
+      console.log("ask");
+      let _course = new ethers.Contract(
+        selectedCourse.address,
+        CourseArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const QA_address = await _course.qaBoard();
+      let _qa = new ethers.Contract(
+        QA_address,
+        QnABoardArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const tx = await _qa.postQuestion(question.reward, question.hash, {
+        value: question.reward,
+      });
+
+      this.setState({ txBeingSent: tx.hash });
+
+      const receipt = await tx.wait();
+
+      if (receipt.status === 0) {
+        throw new Error("Transaction failed");
+      }
+    } catch (error) {
+      if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+        return;
+      }
+
+      console.error(error);
+      this.setState({ transactionError: error });
+    } finally {
+      this.setState({ txBeingSent: undefined });
+    }
+  }
+  async _ansQ(selectedCourse, answer) {
+    try {
+      this._dismissTransactionError();
+      console.log("answer");
+      let _course = new ethers.Contract(
+        selectedCourse.address,
+        CourseArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const QA_address = await _course.qaBoard();
+      let _qa = new ethers.Contract(
+        QA_address,
+        QnABoardArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const tx = await _qa.answerQuestion(answer.qid, answer.hash);
+
+      this.setState({ txBeingSent: tx.hash });
+
+      const receipt = await tx.wait();
+
+      if (receipt.status === 0) {
+        throw new Error("Transaction failed");
+      }
+    } catch (error) {
+      if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+        return;
+      }
+
+      console.error(error);
+      this.setState({ transactionError: error });
+    } finally {
+      this.setState({ txBeingSent: undefined });
+    }
+  }
+  async _acceptQ(selectedCourse, answer) {
+    try {
+      this._dismissTransactionError();
+      console.log("accept ans");
+      let _course = new ethers.Contract(
+        selectedCourse.address,
+        CourseArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const QA_address = await _course.qaBoard();
+      let _qa = new ethers.Contract(
+        QA_address,
+        QnABoardArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const tx = await _qa.acceptAnswer(answer.qid, answer.id);
+
+      this.setState({ txBeingSent: tx.hash });
+
+      const receipt = await tx.wait();
+
+      if (receipt.status === 0) {
+        throw new Error("Transaction failed");
+      }
     } catch (error) {
       if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
         return;

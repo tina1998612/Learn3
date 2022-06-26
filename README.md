@@ -2,6 +2,8 @@
 
 ### 🚀 The Next Generation Web3 Education NFT Protocol
 
+- Try it at https://62b87f168a18c35b4cbbde1e--learn3.netlify.app/
+
 - Dev: @tina1998612, @frank890417
 - Made in ETH New York 2022 ⭐️
 

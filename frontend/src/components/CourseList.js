@@ -13,7 +13,11 @@ import { CourseView } from "./CourseView";
 import React, { useState, useEffect } from "react";
 import { Fade } from "@chakra-ui/react";
 
-export const CourseList = ({ purchaseCourse, coursesJsonArr }) => {
+export const CourseList = ({
+  purchaseCourse,
+  coursesJsonArr,
+  refundCourse,
+}) => {
   let [selectedCourse, setSelectedCourse] = useState(null);
 
   return (
@@ -27,6 +31,7 @@ export const CourseList = ({ purchaseCourse, coursesJsonArr }) => {
                 course={selectedCourse}
                 handleBack={() => setSelectedCourse(null)}
                 handlePurchase={() => purchaseCourse(selectedCourse)}
+                handleRefund={() => refundCourse(selectedCourse)}
               />
             </>
           )}

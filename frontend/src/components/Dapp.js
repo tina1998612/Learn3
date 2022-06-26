@@ -118,6 +118,9 @@ export class Dapp extends React.Component {
                 this._purchaseCourse(selectedCourse)
               }
               coursesJsonArr={this.state.courses}
+              refundCourse={(selectedCourse) =>
+                this._refundCourse(selectedCourse)
+              }
             ></CourseList>
           </Container>
         </Box>
@@ -410,6 +413,35 @@ export class Dapp extends React.Component {
       this.setState({ txBeingSent: undefined });
     }
   }
+  async _refundCourse(selectedCourse) {
+    try {
+      this._dismissTransactionError();
+      console.log("refunding");
+      let _course = new ethers.Contract(
+        selectedCourse.address,
+        CourseArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const tx = await _course.refund();
+
+      this.setState({ txBeingSent: tx.hash });
+
+      const receipt = await tx.wait();
+
+      if (receipt.status === 0) {
+        throw new Error("Transaction failed");
+      }
+    } catch (error) {
+      if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+        return;
+      }
+
+      console.error(error);
+      this.setState({ transactionError: error });
+    } finally {
+      this.setState({ txBeingSent: undefined });
+    }
+  }
   async _purchaseCourse(selectedCourse) {
     try {
       this._dismissTransactionError();
@@ -542,6 +574,12 @@ export class Dapp extends React.Component {
     this.setState({
       networkError: "Please connect Metamask to Rinkeby",
     });
+    // if (window.ethereum.networkVersion === "137") {
+    //   return true;
+    // }
+    // this.setState({
+    //   networkError: "Please connect Metamask to Polygon",
+    // });
 
     return false;
   }

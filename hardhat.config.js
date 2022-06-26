@@ -28,5 +28,12 @@ module.exports = {
       },
       chainId: 4,
     },
+    polygon: {
+      url: "https://polygon-mainnet.infura.io/v3/a84b538abf714818b3662cd1fcd7c530",
+      accounts: {
+        mnemonic: process.env.MNEMONIC,
+      },
+      chainId: 137,
+    },
   },
 };

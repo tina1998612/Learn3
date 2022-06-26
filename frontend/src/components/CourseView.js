@@ -15,7 +15,12 @@ import React from "react";
 import { LockIcon } from "@chakra-ui/icons";
 import { Fade } from "@chakra-ui/react";
 
-export const CourseView = ({ course, handleBack, handlePurchase }) => {
+export const CourseView = ({
+  course,
+  handleBack,
+  handlePurchase,
+  handleRefund,
+}) => {
   return (
     <Fade in={true}>
       <Flex pt="5">
@@ -41,13 +46,17 @@ export const CourseView = ({ course, handleBack, handlePurchase }) => {
           <Text mt="5" fontSize="2xl">
             Contents:
           </Text>
-          {Array.from({ length: 10 }).map((unit) => {
+          {Array.from({ length: 5 }).map((unit) => {
             return (
               <Center backgroundColor="white" p="2" shadow="xl" mb="3">
                 Course Unit
               </Center>
             );
           })}
+          <Button mt="5" colorScheme="yellow" onClick={handleRefund}>
+            {" "}
+            Refund Course
+          </Button>
         </Box>
         <Box flex="8" pt="15" px="5">
           <Flex

@@ -31,5 +31,9 @@
     "ethers": "^5.0.0",
     "hardhat": "^2.3.0",
     "husky": "^4.2.5"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "erc721a": "^4.1.0"
   }
 }

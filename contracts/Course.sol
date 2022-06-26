@@ -29,7 +29,6 @@ contract Course is ERC721A, Ownable {
     uint public tutorShare;
     uint public QnABoardShare;
     uint public constant platformFeeShare = 10;
-    address public constant platformFeeReceiver = 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266; // TODO
 
     constructor (
         string memory _name, 
@@ -74,6 +73,18 @@ contract Course is ERC721A, Ownable {
 
     modifier isRefundActive() {
         require(block.timestamp <= refundEndTime || refundEndTime == 0, "Refund period is over.");
+        _;
+    }
+
+    modifier onlyTutorAndOwner() {
+        bool isTutor = false;
+        for(uint i=0; i < tutors.length; i++) {
+            if(tutors[i] == _msgSender()) {
+                isTutor = true;
+                break;
+            }
+        }
+        require(isTutor || _msgSender() == owner(), "Not a tutor or owner.");
         _;
     }
 
@@ -133,11 +144,11 @@ contract Course is ERC721A, Ownable {
         Address.sendValue(payable(address(qaBoard)), fullAmount * QnABoardShare / 100);
 
         // Platform fee 
-        Address.sendValue(payable(platformFeeReceiver), address(this).balance);
+        Address.sendValue(payable(owner()), address(this).balance);
     }
 
     /// @dev Set new baseURI
-    function setBaseURI(string memory baseURI) external onlyOwner {
+    function setBaseURI(string memory baseURI) external onlyTutorAndOwner {
         baseTokenURI = baseURI;
     }
 

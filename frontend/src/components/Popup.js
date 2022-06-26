@@ -26,9 +26,11 @@ export const Popup = ({ createCourse }) => {
   let [newCourse, setNewCourse] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   function _createCourse(data) {
+    console.log("hi", data.price);
+
     const newData = {
       name: data.name || "Course101",
-      price: ethers.utils.parseEther(data.price) || 0,
+      price: data.price ? ethers.utils.parseEther(data.price) : 0,
       symbol: data.symbol || "CRS",
       _baseTokenURI:
         data._baseTokenURI ||
@@ -41,7 +43,7 @@ export const Popup = ({ createCourse }) => {
       _tutors: data._tutors || "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
       _tutorsPercent: data._tutorsPercent || "100",
     };
-    // console.log(newData);
+    console.log(newData);
     createCourse(newData);
     // var data = new FormData(evt.target);
     // let formObject = Object.fromEntries(data.entries());

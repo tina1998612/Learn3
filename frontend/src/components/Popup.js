@@ -43,7 +43,7 @@ export const Popup = () => {
                         <form onSubmit={ handleSubmit(createCourse) }>
                             <FormControl>
                                 <FormLabel htmlFor='Name'>Name</FormLabel>
-                                <Input id='Name' type='Name' />
+                                <Input id='Name' type='symbol' />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor='symbol'>symbol</FormLabel>

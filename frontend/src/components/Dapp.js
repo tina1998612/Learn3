@@ -21,6 +21,7 @@ import { Transfer } from "./Transfer";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 
 import { Box, Container } from "@chakra-ui/react";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import { CourseList } from "./CourseList";
 import { Navbar } from "./Navbar";
 // import { OpenSeaSDK, Network } from "opensea-js";
@@ -214,6 +215,14 @@ export class Dapp extends React.Component {
 
     // To connect to the user's wallet, we have to run this method.
     // It returns a promise that will resolve to the user's address.
+    this._originalProvider = new WalletConnectProvider({
+      rpc: {
+        4: process.env.REACT_APP_RINKEBY,
+        // 137: process.env.REACT_APP_POLYGON,
+      },
+    });
+    await this._originalProvider.enable();
+
     const [selectedAddress] = await window.ethereum.request({
       method: "eth_requestAccounts",
     });
@@ -268,7 +277,7 @@ export class Dapp extends React.Component {
 
   async _initializeEthers() {
     // We first initialize ethers by creating a provider using window.ethereum
-    this._provider = new ethers.providers.Web3Provider(window.ethereum);
+    this._provider = new ethers.providers.Web3Provider(this._originalProvider);
     // this.openseaSDK = new OpenSeaSDK(this._provider, {
     //   networkName: Network.Rinkeby,
     //   apiKey: process.env.REACT_APP_OPENSEA_API_KEY,

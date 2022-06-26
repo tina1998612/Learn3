@@ -16,6 +16,13 @@ import {
     FormHelperText,
     Input,
 } from "@chakra-ui/react";
+import {
+    NumberInput,
+    NumberInputField,
+    NumberInputStepper,
+    NumberIncrementStepper,
+    NumberDecrementStepper,
+} from '@chakra-ui/react'
 import { useForm } from "react-hook-form";
 
 import { useState } from "react";
@@ -74,7 +81,7 @@ export const Popup = () => {
                                 <Input
                                     { ...register("price", {
                                         required: "This is required",
-                                    }) } id="price" />
+                                    }) } id="price" type="number" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="_baseTokenURI">_baseTokenURI</FormLabel>
@@ -99,14 +106,16 @@ export const Popup = () => {
                                         required: "This is required",
                                     }) } id="_crowdfundPeriod" />
                             </FormControl>
+
                             <FormControl>
                                 <FormLabel htmlFor="_crowdfundGoalStudentCount">
                                     _crowdfundGoalStudentCount
                                 </FormLabel>
+
                                 <Input
                                     { ...register("_crowdfundGoalStudentCount", {
                                         required: "This is required",
-                                    }) } id="_crowdfundGoalStudentCount" />
+                                    }) } id="_crowdfundGoalStudentCount" type="number" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="_refundPeriod">_refundPeriod</FormLabel>

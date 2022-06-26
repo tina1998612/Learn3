@@ -6,6 +6,7 @@ import { ethers } from "ethers";
 // We import the contract's artifacts and address here, as we are going to be
 // using them with ethers
 import TokenArtifact from "../contracts/Token.json";
+import CourseFactoryArtifact from "../contracts/CourseFactory.json";
 import contractAddress from "../contracts/contract-address.json";
 
 // All the logic of this dapp is contained in the Dapp component.
@@ -19,15 +20,25 @@ import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
 
-import { CourseList } from './CourseList';
-import { Taskboard } from './Taskboard';
-import { Container, Flex, Box, Tabs, TabList, TabPanels, TabPanel, Tab, Center } from '@chakra-ui/react';
-import { Navbar } from './Navbar'
+import { CourseList } from "./CourseList";
+import { Taskboard } from "./Taskboard";
+import {
+  Container,
+  Flex,
+  Box,
+  Tabs,
+  TabList,
+  TabPanels,
+  TabPanel,
+  Tab,
+  Center,
+} from "@chakra-ui/react";
+import { Navbar } from "./Navbar";
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
 // If you are using MetaMask, be sure to change the Network id to 1337.
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
 // to use when deploying to other networks.
-const HARDHAT_NETWORK_ID = '31337';
+const HARDHAT_NETWORK_ID = "31337";
 
 // This is an error code that indicates that the user canceled a transaction
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
@@ -58,6 +69,7 @@ export class Dapp extends React.Component {
       txBeingSent: undefined,
       transactionError: undefined,
       networkError: undefined,
+      courses: undefined,
     };
 
     this.state = this.initialState;
@@ -93,57 +105,59 @@ export class Dapp extends React.Component {
     //   return <Loading />;
     // }
 
-    return (<>
-      <Box backgroundColor="#E9E9E7">
-        <Container maxW="100%" >
-          <Navbar maxW="100%" selectedAddress={ this.state.selectedAddress }
-            balance={ this.state.balance }
-            tokenData={ this.state.tokenData }
-            ConnectWalletBtn={ <ConnectWallet
-              connectWallet={ () => this._connectWallet() }
-              networkError={ this.state.networkError }
-              dismiss={ () => this._dismissNetworkError() }
-            /> }>
+    return (
+      <>
+        <Box backgroundColor="#E9E9E7">
+          <Container maxW="100%">
+            <Navbar
+              maxW="100%"
+              selectedAddress={this.state.selectedAddress}
+              balance={this.state.balance}
+              tokenData={this.state.tokenData}
+              ConnectWalletBtn={
+                <ConnectWallet
+                  connectWallet={() => this._connectWallet()}
+                  networkError={this.state.networkError}
+                  dismiss={() => this._dismissNetworkError()}
+                />
+              }
+            ></Navbar>
+            <Tabs colorScheme="yellow" mt="5">
+              <Center>
+                <TabList>
+                  <Tab>Course List</Tab>
+                  <Tab>QA Task Board</Tab>
+                </TabList>
+              </Center>
 
-          </Navbar>
-          <Tabs colorScheme='yellow' mt="5">
-            <Center>
-
-              <TabList>
-                <Tab>Course List</Tab>
-                <Tab>QA Task Board</Tab>
-              </TabList>
-            </Center>
-
-            <TabPanels>
-              <TabPanel>
-                <CourseList selectedAddress={ this.state.selectedAddress }></CourseList>
-              </TabPanel>
-              <TabPanel>
-                <Taskboard></Taskboard>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        </Container>
-      </Box>
-
-    </>)
-
+              <TabPanels>
+                <TabPanel>
+                  <CourseList
+                    selectedAddress={this.state.selectedAddress}
+                  ></CourseList>
+                </TabPanel>
+                <TabPanel>
+                  <Taskboard></Taskboard>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Container>
+        </Box>
+      </>
+    );
 
     // If everything is loaded, we render the application.
     return (
-
-
       <div className="container p-4">
         <div className="row">
           <div className="col-12">
             <h1>
-              { this.state.tokenData.name } ({ this.state.tokenData.symbol })
+              {this.state.tokenData.name} ({this.state.tokenData.symbol})
             </h1>
             <p>
-              Welcome <b>{ this.state.selectedAddress }</b>, you have{ " " }
+              Welcome <b>{this.state.selectedAddress}</b>, you have{" "}
               <b>
-                { this.state.balance.toString() } { this.state.tokenData.symbol }
+                {this.state.balance.toString()} {this.state.tokenData.symbol}
               </b>
               .
             </p>
@@ -159,20 +173,20 @@ export class Dapp extends React.Component {
               for it to be mined.
               If we are waiting for one, we show a message here.
             */}
-            { this.state.txBeingSent && (
-              <WaitingForTransactionMessage txHash={ this.state.txBeingSent } />
-            ) }
+            {this.state.txBeingSent && (
+              <WaitingForTransactionMessage txHash={this.state.txBeingSent} />
+            )}
 
             {/* 
               Sending a transaction can fail in multiple ways. 
               If that happened, we show a message here.
             */}
-            { this.state.transactionError && (
+            {this.state.transactionError && (
               <TransactionErrorMessage
-                message={ this._getRpcErrorMessage(this.state.transactionError) }
-                dismiss={ () => this._dismissTransactionError() }
+                message={this._getRpcErrorMessage(this.state.transactionError)}
+                dismiss={() => this._dismissTransactionError()}
               />
-            ) }
+            )}
           </div>
         </div>
 
@@ -181,9 +195,9 @@ export class Dapp extends React.Component {
             {/*
               If the user has no tokens, we don't show the Transfer form
             */}
-            { this.state.balance.eq(0) && (
-              <NoTokensMessage selectedAddress={ this.state.selectedAddress } />
-            ) }
+            {this.state.balance.eq(0) && (
+              <NoTokensMessage selectedAddress={this.state.selectedAddress} />
+            )}
 
             {/*
               This component displays a form that the user can use to send a 
@@ -191,14 +205,14 @@ export class Dapp extends React.Component {
               The component doesn't have logic, it just calls the transferTokens
               callback.
             */}
-            { this.state.balance.gt(0) && (
+            {this.state.balance.gt(0) && (
               <Transfer
-                transferTokens={ (to, amount) =>
+                transferTokens={(to, amount) =>
                   this._transferTokens(to, amount)
                 }
-                tokenSymbol={ this.state.tokenData.symbol }
+                tokenSymbol={this.state.tokenData.symbol}
               />
-            ) }
+            )}
           </div>
         </div>
       </div>
@@ -217,7 +231,9 @@ export class Dapp extends React.Component {
 
     // To connect to the user's wallet, we have to run this method.
     // It returns a promise that will resolve to the user's address.
-    const [selectedAddress] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const [selectedAddress] = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
 
     // Once we have the address, we can initialize the application.
 
@@ -234,7 +250,7 @@ export class Dapp extends React.Component {
       // `accountsChanged` event can be triggered with an undefined newAddress.
       // This happens when the user removes the Dapp from the "Connected
       // list of sites allowed access to your addresses" (Metamask > Settings > Connections)
-      // To avoid errors, we reset the dapp state 
+      // To avoid errors, we reset the dapp state
       if (newAddress === undefined) {
         return this._resetState();
       }
@@ -278,6 +294,11 @@ export class Dapp extends React.Component {
       TokenArtifact.abi,
       this._provider.getSigner(0)
     );
+    this._courseFactory = new ethers.Contract(
+      contractAddress.CourseFactory,
+      CourseFactoryArtifact.abi,
+      this._provider.getSigner(0)
+    );
   }
 
   // The next two methods are needed to start and stop polling data. While
@@ -288,10 +309,14 @@ export class Dapp extends React.Component {
   // don't need to poll it. If that's the case, you can just fetch it when you
   // initialize the app, as we do with the token data.
   _startPollingData() {
-    this._pollDataInterval = setInterval(() => this._updateBalance(), 1000);
+    this._pollDataInterval = setInterval(() => {
+      this._updateBalance();
+      this._updateCourseList();
+    }, 1000);
 
     // We run it once immediately so we don't have to wait for it
     this._updateBalance();
+    this._updateCourseList();
   }
 
   _stopPollingData() {
@@ -311,6 +336,10 @@ export class Dapp extends React.Component {
   async _updateBalance() {
     const balance = await this._token.balanceOf(this.state.selectedAddress);
     this.setState({ balance });
+  }
+  async _updateCourseList() {
+    const courses = await this._courseFactory.courses();
+    this.setState({ courses });
   }
 
   // This method sends an ethereum transaction to transfer tokens.
@@ -398,14 +427,14 @@ export class Dapp extends React.Component {
     this.setState(this.initialState);
   }
 
-  // This method checks if Metamask selected network is Localhost:8545 
+  // This method checks if Metamask selected network is Localhost:8545
   _checkNetwork() {
     if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
       return true;
     }
 
     this.setState({
-      networkError: 'Please connect Metamask to Localhost:8545'
+      networkError: "Please connect Metamask to Localhost:8545",
     });
 
     return false;

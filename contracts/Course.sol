@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import "erc721a/contracts/ERC721A.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Address.sol"; 
+import "@openzeppelin/contracts/utils/Address.sol";
 import "./QnABoard.sol";
 
 contract Course is ERC721A, Ownable {

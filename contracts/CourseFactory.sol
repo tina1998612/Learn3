@@ -8,7 +8,7 @@ contract CourseFactory is Ownable {
     Course[] public courses;
 
     function createCourse(
-        string memory _name, 
+        string memory _name,
         string memory _symbol,
         uint _price,
         string memory _baseTokenURI,

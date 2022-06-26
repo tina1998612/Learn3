@@ -19,17 +19,17 @@ async function main() {
 
   console.log("Account balance:", (await deployer.getBalance()).toString());
 
-  const Token = await ethers.getContractFactory("Token");
-  const token = await Token.deploy();
-  await token.deployed();
+  const CourseFactory = await ethers.getContractFactory("CourseFactory");
+  const courseFactory = await CourseFactory.deploy();
+  await courseFactory.deployed();
 
-  console.log("Token address:", token.address);
+  console.log("CourseFactory address:", courseFactory.address);
 
   // We also save the contract's artifacts and address in the frontend directory
-  saveFrontendFiles(token);
+  saveFrontendFiles(courseFactory);
 }
 
-function saveFrontendFiles(token) {
+function saveFrontendFiles(courseFactory) {
   const fs = require("fs");
   const contractsDir = __dirname + "/../frontend/src/contracts";
 
@@ -39,14 +39,14 @@ function saveFrontendFiles(token) {
 
   fs.writeFileSync(
     contractsDir + "/contract-address.json",
-    JSON.stringify({ Token: token.address }, undefined, 2)
+    JSON.stringify({ CourseFactory: courseFactory.address }, undefined, 2)
   );
 
-  const TokenArtifact = artifacts.readArtifactSync("Token");
+  const CourseFactoryArtifact = artifacts.readArtifactSync("CourseFactory");
 
   fs.writeFileSync(
-    contractsDir + "/Token.json",
-    JSON.stringify(TokenArtifact, null, 2)
+    contractsDir + "/CourseFactory.json",
+    JSON.stringify(CourseFactoryArtifact, null, 2)
   );
 }
 

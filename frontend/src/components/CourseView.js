@@ -21,6 +21,7 @@ export const CourseView = ({
   handlePurchase,
   handleRefund,
   handleGift,
+  handleRevenue,
 }) => {
   return (
     <Fade in={true}>
@@ -37,7 +38,6 @@ export const CourseView = ({
               </BreadcrumbLink>
             </BreadcrumbItem>
           </Breadcrumb>
-
           <Text fontSize="4xl" fontWeight="semibold">
             {course.name}
           </Text>
@@ -60,6 +60,16 @@ export const CourseView = ({
               Refund Course
             </Button>
           )}
+          <br />
+          {course.price != 0 && (
+            <Button mt="5" colorScheme="yellow" onClick={handleRevenue}>
+              {" "}
+              Distribute Revenue
+            </Button>
+          )}
+          <br />
+          <br />
+          (Needs to wait until the refund period ends.)
           {/* {course.purchased && (
             <Button mt="5" colorScheme="yellow" onClick={handleGift}>
               {" "}

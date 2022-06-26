@@ -111,6 +111,7 @@ contract Course is ERC721A, Ownable {
     
     function enroll() external payable {
         // check fund
+        require(addrToTokenIDPlusOne[_msgSender()] == 0, "Already purchased");
         require(msg.value >= price, "Not enough fund to mint NFT");
         mintPrice[_nextTokenId()] = price;
         addrToTokenIDPlusOne[_msgSender()] = _nextTokenId() + 1;

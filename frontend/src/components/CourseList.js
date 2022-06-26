@@ -18,6 +18,7 @@ export const CourseList = ({
   coursesJsonArr,
   refundCourse,
   giftCourse,
+  revenue,
 }) => {
   let [selectedCourse, setSelectedCourse] = useState(null);
 
@@ -34,6 +35,7 @@ export const CourseList = ({
                 handlePurchase={() => purchaseCourse(selectedCourse)}
                 handleRefund={() => refundCourse(selectedCourse)}
                 handleGift={() => giftCourse(selectedCourse)}
+                handleRevenue={() => revenue(selectedCourse)}
               />
             </>
           )}

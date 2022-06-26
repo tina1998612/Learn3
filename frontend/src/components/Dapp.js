@@ -125,6 +125,7 @@ export class Dapp extends React.Component {
                 this._refundCourse(selectedCourse)
               }
               giftCourse={(selectedCourse) => this._giftCourse(selectedCourse)}
+              revenue={(selectedCourse) => this._revenue(selectedCourse)}
             ></CourseList>
           </Container>
         </Box>
@@ -458,6 +459,35 @@ export class Dapp extends React.Component {
       this.setState({ txBeingSent: undefined });
     }
   }
+  async _revenue(selectedCourse) {
+    try {
+      this._dismissTransactionError();
+      console.log("distributing revenue");
+      let _course = new ethers.Contract(
+        selectedCourse.address,
+        CourseArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const tx = await _course.distributeRevenue();
+
+      this.setState({ txBeingSent: tx.hash });
+
+      const receipt = await tx.wait();
+
+      if (receipt.status === 0) {
+        throw new Error("Transaction failed");
+      }
+    } catch (error) {
+      if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+        return;
+      }
+
+      console.error(error);
+      this.setState({ transactionError: error });
+    } finally {
+      this.setState({ txBeingSent: undefined });
+    }
+  }
   async _giftCourse(selectedCourse) {
     try {
       this._dismissTransactionError();
@@ -506,7 +536,9 @@ export class Dapp extends React.Component {
         this._provider.getSigner(0)
       );
       const _price = await _course.price();
-      const tx = await _course.enroll({ value: _price.toNumber() });
+      const tx = await _course.enroll({
+        value: _price,
+      });
       //  const tx = await this._course.createCourse(
       //    data.name,
       //    data.symbol,

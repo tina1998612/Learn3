@@ -20,6 +20,7 @@ export const CourseView = ({
   handleBack,
   handlePurchase,
   handleRefund,
+  handleGift,
 }) => {
   return (
     <Fade in={true}>
@@ -53,10 +54,18 @@ export const CourseView = ({
               </Center>
             );
           })}
-          <Button mt="5" colorScheme="yellow" onClick={handleRefund}>
-            {" "}
-            Refund Course
-          </Button>
+          {course.purchased && course.price != 0 && (
+            <Button mt="5" colorScheme="yellow" onClick={handleRefund}>
+              {" "}
+              Refund Course
+            </Button>
+          )}
+          {/* {course.purchased && (
+            <Button mt="5" colorScheme="yellow" onClick={handleGift}>
+              {" "}
+              Send as Gift
+            </Button>
+          )} */}
         </Box>
         <Box flex="8" pt="15" px="5">
           <Flex

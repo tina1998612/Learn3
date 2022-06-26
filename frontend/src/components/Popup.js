@@ -12,6 +12,7 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
+import { ethers } from "ethers";
 import { useForm } from "react-hook-form";
 
 import { useState } from "react";
@@ -27,7 +28,7 @@ export const Popup = ({ createCourse }) => {
   function _createCourse(data) {
     const newData = {
       name: data.name || "Course101",
-      price: data.price || 0,
+      price: ethers.utils.parseEther(data.price) || 0,
       symbol: data.symbol || "CRS",
       _baseTokenURI:
         data._baseTokenURI ||
@@ -93,7 +94,7 @@ export const Popup = ({ createCourse }) => {
                     required: false,
                   })}
                   id="price"
-                  type="number"
+                  type="float"
                   placeholder="0"
                 />
               </FormControl>

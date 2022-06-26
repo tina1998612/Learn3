@@ -23,6 +23,7 @@ import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { Box, Container } from "@chakra-ui/react";
 import { CourseList } from "./CourseList";
 import { Navbar } from "./Navbar";
+// import { OpenSeaSDK, Network } from "opensea-js";
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
 // If you are using MetaMask, be sure to change the Network id to 1337.
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
@@ -121,6 +122,7 @@ export class Dapp extends React.Component {
               refundCourse={(selectedCourse) =>
                 this._refundCourse(selectedCourse)
               }
+              giftCourse={(selectedCourse) => this._giftCourse(selectedCourse)}
             ></CourseList>
           </Container>
         </Box>
@@ -267,7 +269,10 @@ export class Dapp extends React.Component {
   async _initializeEthers() {
     // We first initialize ethers by creating a provider using window.ethereum
     this._provider = new ethers.providers.Web3Provider(window.ethereum);
-
+    // this.openseaSDK = new OpenSeaSDK(this._provider, {
+    //   networkName: Network.Rinkeby,
+    //   apiKey: process.env.REACT_APP_OPENSEA_API_KEY,
+    // });
     // Then, we initialize the contract using that provider and the token's
     // artifact. You can do this same thing with your contracts.
 
@@ -320,6 +325,7 @@ export class Dapp extends React.Component {
     if (!this._courseFactory) return;
     const courseCnt = await this._courseFactory.functions.getCourseCount();
     // console.log(parseInt(courseCnt));
+    // let etherPrice = await this._provider.getEtherPrice();
     let courses = [];
     for (let i = 0; i < parseInt(courseCnt); i++) {
       let contractAddr = await this._courseFactory.courses(i);
@@ -343,7 +349,7 @@ export class Dapp extends React.Component {
         cover: courseMockData[courses.length].cover,
         description: "This is a course you just created.",
         status: "funding",
-        price: _price.toNumber(),
+        price: ethers.utils.formatEther(_price),
         totalFunding: _goalFund.toNumber(),
         fund: _currentFund.toNumber(),
         purchased: _purchased.toNumber() != 0,
@@ -442,6 +448,44 @@ export class Dapp extends React.Component {
       this.setState({ txBeingSent: undefined });
     }
   }
+  async _giftCourse(selectedCourse) {
+    try {
+      this._dismissTransactionError();
+      console.log("gifting");
+      let _course = new ethers.Contract(
+        selectedCourse.address,
+        CourseArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const courseAddr = selectedCourse.address;
+      const addr = this.state.selectedAddress;
+      const _tokenid = await _course.addrToTokenIDPlusOne(addr);
+      const tokenid = _tokenid.toNumber() - 1;
+      let friendAddr = prompt("Please enter your friend's address:)");
+      const transactionHash = await _course.transfer({
+        asset: { tokenid, courseAddr },
+        addr, // Must own the asset
+        friendAddr,
+      });
+
+      this.setState({ txBeingSent: transactionHash });
+
+      // const receipt = await tx.wait();
+
+      // if (receipt.status === 0) {
+      //   throw new Error("Transaction failed");
+      // }
+    } catch (error) {
+      if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+        return;
+      }
+
+      console.error(error);
+      this.setState({ transactionError: error });
+    } finally {
+      this.setState({ txBeingSent: undefined });
+    }
+  }
   async _purchaseCourse(selectedCourse) {
     try {
       this._dismissTransactionError();
@@ -451,7 +495,8 @@ export class Dapp extends React.Component {
         CourseArtifact.abi,
         this._provider.getSigner(0)
       );
-      const tx = await _course.enroll();
+      const _price = await _course.price();
+      const tx = await _course.enroll({ value: _price.toNumber() });
       //  const tx = await this._course.createCourse(
       //    data.name,
       //    data.symbol,

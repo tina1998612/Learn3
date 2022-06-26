@@ -24,7 +24,7 @@ contract Course is ERC721A, Ownable {
 
     mapping(uint256 => bool) public hasRefunded;
     mapping(uint256 => uint256) public mintPrice; // tokenID to mint price for refund
-    mapping(address => uint) public addrToTokenID; // tokenID to mint price for refund
+    mapping(address => uint) public addrToTokenIDPlusOne; // tokenID to mint price for refund
     
     // revenue share
     uint public tutorShare;
@@ -113,18 +113,19 @@ contract Course is ERC721A, Ownable {
         // check fund
         require(msg.value >= price, "Not enough fund to mint NFT");
         mintPrice[_nextTokenId()] = price;
-        addrToTokenID[_msgSender()] = _nextTokenId();
+        addrToTokenIDPlusOne[_msgSender()] = _nextTokenId() + 1;
         super._safeMint(_msgSender(), 1);
     }
 
     function ownerReserve(address _recipient) external {
         mintPrice[_nextTokenId()] = 0;
-        addrToTokenID[_msgSender()] = _nextTokenId();
+        addrToTokenIDPlusOne[_msgSender()] = _nextTokenId() + 1;
         _safeMint(_recipient, 1);
     }
 
     function refund() external isRefundActive {
-        uint tokenId = addrToTokenID[_msgSender()];
+        require(addrToTokenIDPlusOne[_msgSender()] != 0, "Invalid ID");
+        uint tokenId = addrToTokenIDPlusOne[_msgSender()] - 1;
         require(_msgSender() == ownerOf(tokenId), "Not token owner");
         require(!hasRefunded[tokenId], "Already refunded");
         uint256 refundAmount = mintPrice[tokenId];

@@ -20,8 +20,8 @@ import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
 
 import { CourseList } from './CourseModule';
-import { Container } from '@chakra-ui/react';
-
+import { Container, Flex, Box } from '@chakra-ui/react';
+import { Navbar } from './Navbar'
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
 // If you are using MetaMask, be sure to change the Network id to 1337.
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
@@ -93,7 +93,12 @@ export class Dapp extends React.Component {
     }
 
     return (<>
-      <Container maxW="100%" backgroundColor="gray.900">
+      <Container maxW="100%" backgroundColor="gray.100">
+        <Navbar maxW="100%" selectedAddress={ this.state.selectedAddress }
+          balance={ this.state.balance }
+          tokenData={ this.state.tokenData }>
+
+        </Navbar>
         <CourseList></CourseList>
       </Container>
 

@@ -82,7 +82,7 @@ export const CourseView = ({
             overflow="hidden"
             backgroundColor="white"
             shadow="xl"
-            p="5"
+            p="5" borderRadius={ 5 }
           >
             { !course.purchased ? (
               <Flex direction="column">

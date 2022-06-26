@@ -15,8 +15,8 @@ The first things you need to do are cloning this repository and installing its
 dependencies:
 
 ```sh
-git clone https://github.com/nomiclabs/hardhat-hackathon-boilerplate.git
-cd hardhat-hackathon-boilerplate
+git clone https://github.com/nomiclabs/Learn3.git
+cd Learn3
 npm install
 ```
 
@@ -41,7 +41,7 @@ npm install
 npm start
 ```
 
-> Note: There's [an issue in `ganache-core`](https://github.com/trufflesuite/ganache-core/issues/650) that can make the `npm install` step fail. 
+> Note: There's [an issue in `ganache-core`](https://github.com/trufflesuite/ganache-core/issues/650) that can make the `npm install` step fail.
 >
 > If you see `npm ERR! code ENOLOCAL`, try running `npm ci` instead of `npm install`.
 

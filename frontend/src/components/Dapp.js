@@ -19,6 +19,9 @@ import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
 
+import { CourseList } from './CourseModule';
+import { Container, Flex, Box } from '@chakra-ui/react';
+import { Navbar } from './Navbar'
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
 // If you are using MetaMask, be sure to change the Network id to 1337.
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
@@ -75,10 +78,10 @@ export class Dapp extends React.Component {
     // clicks a button. This callback just calls the _connectWallet method.
     if (!this.state.selectedAddress) {
       return (
-        <ConnectWallet 
-          connectWallet={() => this._connectWallet()} 
-          networkError={this.state.networkError}
-          dismiss={() => this._dismissNetworkError()}
+        <ConnectWallet
+          connectWallet={ () => this._connectWallet() }
+          networkError={ this.state.networkError }
+          dismiss={ () => this._dismissNetworkError() }
         />
       );
     }
@@ -89,18 +92,33 @@ export class Dapp extends React.Component {
       return <Loading />;
     }
 
+    return (<>
+      <Container maxW="100%" backgroundColor="gray.100">
+        <Navbar maxW="100%" selectedAddress={ this.state.selectedAddress }
+          balance={ this.state.balance }
+          tokenData={ this.state.tokenData }>
+
+        </Navbar>
+        <CourseList></CourseList>
+      </Container>
+
+    </>)
+
+
     // If everything is loaded, we render the application.
     return (
+
+
       <div className="container p-4">
         <div className="row">
           <div className="col-12">
             <h1>
-              {this.state.tokenData.name} ({this.state.tokenData.symbol})
+              { this.state.tokenData.name } ({ this.state.tokenData.symbol })
             </h1>
             <p>
-              Welcome <b>{this.state.selectedAddress}</b>, you have{" "}
+              Welcome <b>{ this.state.selectedAddress }</b>, you have{ " " }
               <b>
-                {this.state.balance.toString()} {this.state.tokenData.symbol}
+                { this.state.balance.toString() } { this.state.tokenData.symbol }
               </b>
               .
             </p>
@@ -116,20 +134,20 @@ export class Dapp extends React.Component {
               for it to be mined.
               If we are waiting for one, we show a message here.
             */}
-            {this.state.txBeingSent && (
-              <WaitingForTransactionMessage txHash={this.state.txBeingSent} />
-            )}
+            { this.state.txBeingSent && (
+              <WaitingForTransactionMessage txHash={ this.state.txBeingSent } />
+            ) }
 
             {/* 
               Sending a transaction can fail in multiple ways. 
               If that happened, we show a message here.
             */}
-            {this.state.transactionError && (
+            { this.state.transactionError && (
               <TransactionErrorMessage
-                message={this._getRpcErrorMessage(this.state.transactionError)}
-                dismiss={() => this._dismissTransactionError()}
+                message={ this._getRpcErrorMessage(this.state.transactionError) }
+                dismiss={ () => this._dismissTransactionError() }
               />
-            )}
+            ) }
           </div>
         </div>
 
@@ -138,9 +156,9 @@ export class Dapp extends React.Component {
             {/*
               If the user has no tokens, we don't show the Transfer form
             */}
-            {this.state.balance.eq(0) && (
-              <NoTokensMessage selectedAddress={this.state.selectedAddress} />
-            )}
+            { this.state.balance.eq(0) && (
+              <NoTokensMessage selectedAddress={ this.state.selectedAddress } />
+            ) }
 
             {/*
               This component displays a form that the user can use to send a 
@@ -148,14 +166,14 @@ export class Dapp extends React.Component {
               The component doesn't have logic, it just calls the transferTokens
               callback.
             */}
-            {this.state.balance.gt(0) && (
+            { this.state.balance.gt(0) && (
               <Transfer
-                transferTokens={(to, amount) =>
+                transferTokens={ (to, amount) =>
                   this._transferTokens(to, amount)
                 }
-                tokenSymbol={this.state.tokenData.symbol}
+                tokenSymbol={ this.state.tokenData.symbol }
               />
-            )}
+            ) }
           </div>
         </div>
       </div>
@@ -195,10 +213,10 @@ export class Dapp extends React.Component {
       if (newAddress === undefined) {
         return this._resetState();
       }
-      
+
       this._initialize(newAddress);
     });
-    
+
     // We reset the dapp state if the network is changed
     window.ethereum.on("chainChanged", ([networkId]) => {
       this._stopPollingData();
@@ -361,7 +379,7 @@ export class Dapp extends React.Component {
       return true;
     }
 
-    this.setState({ 
+    this.setState({
       networkError: 'Please connect Metamask to Localhost:8545'
     });
 

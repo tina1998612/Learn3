@@ -1,6 +1,6 @@
 
-import { Spacer, Flex, Box, Text, Image } from '@chakra-ui/react';
-
+import { Spacer, Flex, Box, Text, Image, Button } from '@chakra-ui/react';
+import { Popup } from './Popup'
 export let Navbar = ({ selectedAddress, balance, tokenData, ConnectWalletBtn }) => {
     return <Box pt={ 4 }>
         <Flex px="10" py="3" backgroundColor="white" shadow="xl" borderRadius="50" align="center">
@@ -10,10 +10,13 @@ export let Navbar = ({ selectedAddress, balance, tokenData, ConnectWalletBtn }) 
 
             </Box>
             <Spacer></Spacer>
+            { selectedAddress && <Popup>
+
+            </Popup> }
             <Flex>
-                < b > { selectedAddress }</b >
+                { selectedAddress && < b > { selectedAddress.slice(0, 6) + "..." + selectedAddress.slice(-4) }</b > }
                 <Spacer w="5"></Spacer>
-                { balance && (balance || 0).toString() } { tokenData?.symbol }
+                { balance !== undefined && (balance || 0).toString() } { tokenData?.symbol }
             </Flex>
             { !selectedAddress && ConnectWalletBtn }
         </Flex >

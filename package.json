@@ -35,6 +35,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "^4.6.0",
     "erc721a": "^4.1.0",
+    "react-hook-form": "^7.33.0",
     "react-router-dom": "^6.3.0"
   }
 }

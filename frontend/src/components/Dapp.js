@@ -23,6 +23,7 @@ import { CourseList } from './CourseList';
 import { Taskboard } from './Taskboard';
 import { Container, Flex, Box, Tabs, TabList, TabPanels, TabPanel, Tab, Center } from '@chakra-ui/react';
 import { Navbar } from './Navbar'
+import { Popup } from './Popup'
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
 // If you are using MetaMask, be sure to change the Network id to 1337.
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
@@ -106,24 +107,9 @@ export class Dapp extends React.Component {
             /> }>
 
           </Navbar>
-          <Tabs colorScheme='yellow' mt="5">
-            <Center>
 
-              <TabList>
-                <Tab>Course List</Tab>
-                <Tab>QA Task Board</Tab>
-              </TabList>
-            </Center>
+          <CourseList selectedAddress={ this.state.selectedAddress }></CourseList>
 
-            <TabPanels>
-              <TabPanel>
-                <CourseList selectedAddress={ this.state.selectedAddress }></CourseList>
-              </TabPanel>
-              <TabPanel>
-                <Taskboard></Taskboard>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
         </Container>
       </Box>
 

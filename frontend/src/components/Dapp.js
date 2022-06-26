@@ -788,18 +788,18 @@ export class Dapp extends React.Component {
     // this.setState({
     //   networkError: "Please connect Metamask to Localhost:8545",
     // });
-    if (window.ethereum.networkVersion === "4") {
-      return true;
-    }
-    this.setState({
-      networkError: "Please connect Metamask to Rinkeby",
-    });
-    // if (window.ethereum.networkVersion === "137") {
+    // if (window.ethereum.networkVersion === "4") {
     //   return true;
     // }
     // this.setState({
-    //   networkError: "Please connect Metamask to Polygon",
+    //   networkError: "Please connect Metamask to Rinkeby",
     // });
+    if (window.ethereum.networkVersion === "137") {
+      return true;
+    }
+    this.setState({
+      networkError: "Please connect Metamask to Polygon",
+    });
 
     return false;
   }

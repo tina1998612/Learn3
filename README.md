@@ -4,6 +4,7 @@
 
 - Try it at https://main--learn3.netlify.app/
 - Demo video: https://youtu.be/tWbLXoEPKnc
+- Presentation: https://main--learn3.netlify.app/Learn3.pdf
 
 - Dev: @tina1998612, @frank890417
 - Made in ETH New York 2022 ⭐️

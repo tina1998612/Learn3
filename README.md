@@ -22,6 +22,8 @@
 
 ## Main Goal
 
+Thus, we design a protocol that leverages NFTs to help content creators and instructors to make courses / paid contents more transparent and unique. Some of the most noticeable features include:
+
 - **Unlockable Content - use NFT to watch course videos & View Contents**
 - **Secondary digital content marketing (sell NFT and revenue share)**
 - **Crowd Online course funding mechanism**

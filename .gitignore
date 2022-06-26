@@ -8,3 +8,5 @@ package-lock.json
 */package-lock.json
 
 .env
+# Local Netlify folder
+.netlify

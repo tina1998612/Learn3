@@ -109,6 +109,7 @@ export class Dapp extends React.Component {
                   dismiss={() => this._dismissNetworkError()}
                 />
               }
+              createCourse={() => this._createCourse()}
             ></Navbar>
 
             <CourseList
@@ -262,16 +263,13 @@ export class Dapp extends React.Component {
 
     // Then, we initialize the contract using that provider and the token's
     // artifact. You can do this same thing with your contracts.
-    this._token = new ethers.Contract(
-      contractAddress.Token,
-      TokenArtifact.abi,
-      this._provider.getSigner(0)
-    );
+
     this._courseFactory = new ethers.Contract(
       contractAddress.CourseFactory,
       CourseFactoryArtifact.abi,
       this._provider.getSigner(0)
     );
+    window._courseFactory = this._courseFactory;
   }
 
   // The next two methods are needed to start and stop polling data. While
@@ -312,7 +310,11 @@ export class Dapp extends React.Component {
   }
   async _updateCourseList() {
     if (!this._courseFactory) return;
-    const courses = await this._courseFactory.courses();
+    const courseCnt = await this._courseFactory.courseCnt();
+    let courses = [];
+    for (let i = 0; i < courseCnt; i++) {
+      courses.push(await this._courseFactory.courses(i));
+    }
     this.setState({ courses });
   }
 
@@ -372,6 +374,32 @@ export class Dapp extends React.Component {
     } finally {
       // If we leave the try/catch, we aren't sending a tx anymore, so we clear
       // this part of the state.
+      this.setState({ txBeingSent: undefined });
+    }
+  }
+  // TODO
+  async _createCourse() {
+    try {
+      this._dismissTransactionError();
+
+      const tx = await this._courseFactory.createCourse();
+      this.setState({ txBeingSent: tx.hash });
+
+      const receipt = await tx.wait();
+
+      if (receipt.status === 0) {
+        throw new Error("Transaction failed");
+      }
+
+      await this._updateBalance();
+    } catch (error) {
+      if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+        return;
+      }
+
+      console.error(error);
+      this.setState({ transactionError: error });
+    } finally {
       this.setState({ txBeingSent: undefined });
     }
   }

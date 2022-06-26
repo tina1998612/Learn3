@@ -19,7 +19,7 @@ import {
 import { useForm } from "react-hook-form";
 
 import { useState } from "react";
-export const Popup = () => {
+export const Popup = ({ createCourse }) => {
   const {
     handleSubmit,
     register,
@@ -28,8 +28,9 @@ export const Popup = () => {
   } = useForm({});
   let [newCourse, setNewCourse] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
-  function createCourse(data) {
+  function _createCourse(data) {
     console.log(data);
+    createCourse();
     // var data = new FormData(evt.target);
     // let formObject = Object.fromEntries(data.entries());
     // console.log(formObject);
@@ -53,7 +54,7 @@ export const Popup = () => {
           <ModalHeader>Create Course</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={handleSubmit(createCourse)}>
+            <form onSubmit={handleSubmit(_createCourse)}>
               <FormControl>
                 <FormLabel htmlFor="Name">Name</FormLabel>
                 <Input

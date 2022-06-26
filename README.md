@@ -2,7 +2,7 @@
 
 ### 🚀 The Next Generation Web3 Education NFT Protocol
 
-- Try it at https://62b87f168a18c35b4cbbde1e--learn3.netlify.app/
+- Try it at https://main--learn3.netlify.app/
 - Demo video: https://youtu.be/tWbLXoEPKnc
 
 - Dev: @tina1998612, @frank890417

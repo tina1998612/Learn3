@@ -6,3 +6,5 @@ cache
 artifacts
 package-lock.json
 */package-lock.json
+
+.env

@@ -8,6 +8,7 @@ import { BigNumber, ethers } from "ethers";
 import contractAddress from "../contracts/contract-address.json";
 import CourseArtifact from "../contracts/Course.json";
 import CourseFactoryArtifact from "../contracts/CourseFactory.json";
+import courseMockData from "../data/courses.json";
 
 // All the logic of this dapp is contained in the Dapp component.
 // These other components are just presentational ones: they don't have any
@@ -116,6 +117,7 @@ export class Dapp extends React.Component {
               purchaseCourse={(selectedCourse) =>
                 this._purchaseCourse(selectedCourse)
               }
+              coursesJsonArr={this.state.courses}
             ></CourseList>
           </Container>
         </Box>
@@ -314,19 +316,31 @@ export class Dapp extends React.Component {
   async _updateCourseList() {
     if (!this._courseFactory) return;
     const courseCnt = await this._courseFactory.functions.getCourseCount();
-    console.log(parseInt(courseCnt));
+    // console.log(parseInt(courseCnt));
     let courses = [];
     for (let i = 0; i < parseInt(courseCnt); i++) {
       let contractAddr = await this._courseFactory.courses(i);
-      courses.push(
-        new ethers.Contract(
-          contractAddr,
-          CourseArtifact.abi,
-          this._provider.getSigner(0)
-        )
+      let _courseContract = new ethers.Contract(
+        contractAddr,
+        CourseArtifact.abi,
+        this._provider.getSigner(0)
       );
+      const _name = await _courseContract.name();
+      const _price = await _courseContract.price();
+      courses.push({
+        id: courses.length,
+        name: _name,
+        cover: courseMockData[courses.length].cover,
+        description: "This is a course you just created.",
+        status: "funding",
+        price: _price.toNumber(),
+        totalFunding: 200,
+        fund: 100,
+        purchased: false,
+        address: contractAddr,
+      });
     }
-    console.log(courses);
+    // console.log(courses);
     this.setState({ courses });
   }
 
@@ -392,7 +406,7 @@ export class Dapp extends React.Component {
   async _purchaseCourse(selectedCourse) {
     try {
       this._dismissTransactionError();
-      console.log("purchasing course", selectedCourse.address);
+      // console.log("purchasing course", selectedCourse.address);
       let _course = new ethers.Contract(
         selectedCourse.address,
         CourseArtifact.abi,
@@ -433,20 +447,20 @@ export class Dapp extends React.Component {
   async _createCourse(data) {
     try {
       this._dismissTransactionError();
-
-      console.log(
-        data.name,
-        data.symbol,
-        // BigNumber.from(data.price),
-        data._baseTokenURI,
-        data._isCrowdfund == "true",
-        // BigNumber.from(data._crowdfundPeriod),
-        BigNumber.from(data._crowdfundGoalStudentCount),
-        BigNumber.from(data._refundPeriod),
-        data._tutors.split(","),
-        data._tutorsPercent.split(","),
-        BigNumber.from(data._QnABoardShare)
-      );
+      console.log("creating course", data);
+      // console.log(
+      //   data.name,
+      //   data.symbol,
+      //   // BigNumber.from(data.price),
+      //   data._baseTokenURI,
+      //   data._isCrowdfund == "true",
+      //   // BigNumber.from(data._crowdfundPeriod),
+      //   BigNumber.from(data._crowdfundGoalStudentCount),
+      //   BigNumber.from(data._refundPeriod),
+      //   data._tutors.split(","),
+      //   data._tutorsPercent.split(","),
+      //   BigNumber.from(data._QnABoardShare)
+      // );
       const tx = await this._courseFactory.createCourse(
         data.name,
         data.symbol,

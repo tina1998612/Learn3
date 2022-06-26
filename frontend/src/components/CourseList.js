@@ -13,7 +13,7 @@ import { CourseView } from "./CourseView";
 import React, { useState, useEffect } from "react";
 import { Fade } from "@chakra-ui/react";
 
-export const CourseList = ({ purchaseCourse }) => {
+export const CourseList = ({ purchaseCourse, coursesJsonArr }) => {
   let [selectedCourse, setSelectedCourse] = useState(null);
 
   return (
@@ -23,6 +23,7 @@ export const CourseList = ({ purchaseCourse }) => {
           {selectedCourse && (
             <>
               <CourseView
+                key={selectedCourse.id}
                 course={selectedCourse}
                 handleBack={() => setSelectedCourse(null)}
                 handlePurchase={() => purchaseCourse(selectedCourse)}
@@ -35,15 +36,16 @@ export const CourseList = ({ purchaseCourse }) => {
               <Container maxW="container.xl" p="5" minH="100vh">
                 {/* <Text fontSize="4xl" mb={ 5 } >Course List</Text> */}
                 <SimpleGrid w="100%" columns={[1, 1, 2, 3]} spacing={8}>
-                  {courseMockData.map((course, courseId) => (
-                    <Course
-                      course={course}
-                      key={courseId}
-                      handleOpenCourse={() => {
-                        setSelectedCourse(course);
-                      }}
-                    ></Course>
-                  ))}
+                  {coursesJsonArr &&
+                    coursesJsonArr.map((course, courseId) => (
+                      <Course
+                        course={course}
+                        key={courseId}
+                        handleOpenCourse={() => {
+                          setSelectedCourse(course);
+                        }}
+                      ></Course>
+                    ))}
                 </SimpleGrid>
               </Container>
             </>

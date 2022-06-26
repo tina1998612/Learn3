@@ -90,7 +90,7 @@ export const Popup = ({ createCourse }) => {
                     required: "This is required",
                   })}
                   id="_baseTokenURI"
-                  value="https://"
+                  value="ipfs://QmVmhJLwZLTvVN54dp2jeSVRsX7epY8CnuWbr2iAwnWtty/"
                 />
               </FormControl>
               <FormControl>

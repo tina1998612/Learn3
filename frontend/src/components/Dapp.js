@@ -93,7 +93,7 @@ export class Dapp extends React.Component {
     // }
 
     return (<>
-      <Box backgroundColor="gray.200">
+      <Box backgroundColor="#E9E9E7">
         <Container maxW="100%" >
           <Navbar maxW="100%" selectedAddress={ this.state.selectedAddress }
             balance={ this.state.balance }
@@ -105,6 +105,7 @@ export class Dapp extends React.Component {
             /> }>
 
           </Navbar>
+
           <CourseList selectedAddress={ this.state.selectedAddress }></CourseList>
         </Container>
       </Box>

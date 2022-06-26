@@ -1,7 +1,7 @@
 import React from "react";
 
 import { NetworkErrorMessage } from "./NetworkErrorMessage";
-import { Flex, Stack } from '@chakra-ui/react';
+import { Flex, Stack, Button } from '@chakra-ui/react';
 
 export function ConnectWallet({ connectWallet, networkError, dismiss }) {
   return (
@@ -17,12 +17,14 @@ export function ConnectWallet({ connectWallet, networkError, dismiss }) {
       }
       <Flex align="center">
         {/* <p>Please connect to your wallet.</p> */ }
-        <button
-          className="btn btn-warning"
+        <Button
+          borderRadius={ 50 }
+          colorScheme='yellow'
+          px={ 8 }
           type="button"
           onClick={ connectWallet }
         >  Connect Wallet
-        </button>
+        </Button>
       </Flex>
     </Flex >
   );

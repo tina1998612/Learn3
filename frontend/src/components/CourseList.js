@@ -20,7 +20,7 @@ export const CourseList = (selectedAddress) => {
                 { !selectedCourse && <>
                     {/* <Image src="Learn3-03.jpg"></Image> */ }
                     <Container maxW='container.xl' p="5" minH="100vh" >
-                        <Text fontSize="5xl" mb={ 5 } >Course List</Text>
+                        {/* <Text fontSize="4xl" mb={ 5 } >Course List</Text> */ }
                         <SimpleGrid w="100%" columns={ [1, 1, 2, 3] } spacing={ 8 }>
                             { courseMockData.map((course, courseId) =>
                                 <Course course={ course }

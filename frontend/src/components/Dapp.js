@@ -20,7 +20,8 @@ import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
 
 import { CourseList } from './CourseList';
-import { Container, Flex, Box } from '@chakra-ui/react';
+import { Taskboard } from './Taskboard';
+import { Container, Flex, Box, Tabs, TabList, TabPanels, TabPanel, Tab, Center } from '@chakra-ui/react';
 import { Navbar } from './Navbar'
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
 // If you are using MetaMask, be sure to change the Network id to 1337.
@@ -105,8 +106,24 @@ export class Dapp extends React.Component {
             /> }>
 
           </Navbar>
+          <Tabs colorScheme='yellow' mt="5">
+            <Center>
 
-          <CourseList selectedAddress={ this.state.selectedAddress }></CourseList>
+              <TabList>
+                <Tab>Course List</Tab>
+                <Tab>QA Task Board</Tab>
+              </TabList>
+            </Center>
+
+            <TabPanels>
+              <TabPanel>
+                <CourseList selectedAddress={ this.state.selectedAddress }></CourseList>
+              </TabPanel>
+              <TabPanel>
+                <Taskboard></Taskboard>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </Container>
       </Box>
 

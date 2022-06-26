@@ -1,9 +1,9 @@
 import { Box, Text, Image, Button, Flex, Progress, Spacer, Center, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import React from "react";
-import { ChevronLeftIcon } from "@chakra-ui/icons"
+import { LockIcon } from "@chakra-ui/icons"
 import { Fade } from '@chakra-ui/react'
 
-export const CourseView = ({ course, handleBack, handlePurchase }) => {
+export const CourseView = ({ course, handleBack, handlePurchase, }) => {
     return <Fade in={ true }>
         <Flex pt="5">
             <Box flex='4' p="5" px="5">
@@ -29,7 +29,10 @@ export const CourseView = ({ course, handleBack, handlePurchase }) => {
                 <Flex direction="column" overflow="hidden"
                     backgroundColor="white" shadow="xl" p="5" >
                     { !course.purchased ? <Flex direction="column">
-                        <Text> Purchase Course to start Learning</Text>
+                        <Center p={ 5 }>
+                            <LockIcon w={ 10 } h={ 10 }></LockIcon>
+                        </Center>
+                        <Text align="center"> Purchase Course to start Learning</Text>
                         <Button mt="5" colorScheme="yellow" onClick={ handlePurchase }> Purchase Course ({ course.price }ETH)</Button>
                     </Flex> : <Flex direction="column" flex="1">
                         <Text fontSize="3xl" mb="5"> Chapter 1</Text>

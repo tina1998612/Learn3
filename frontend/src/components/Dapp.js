@@ -19,7 +19,7 @@ import { TransactionErrorMessage } from "./TransactionErrorMessage";
 import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
 
-import { CourseList } from './CourseModule';
+import { CourseList } from './CourseList';
 import { Container, Flex, Box } from '@chakra-ui/react';
 import { Navbar } from './Navbar'
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
@@ -76,31 +76,38 @@ export class Dapp extends React.Component {
     //
     // Note that we pass it a callback that is going to be called when the user
     // clicks a button. This callback just calls the _connectWallet method.
-    if (!this.state.selectedAddress) {
-      return (
-        <ConnectWallet
-          connectWallet={ () => this._connectWallet() }
-          networkError={ this.state.networkError }
-          dismiss={ () => this._dismissNetworkError() }
-        />
-      );
-    }
+    // if (!this.state.selectedAddress) {
+    //   return (
+    //     <ConnectWallet
+    //       connectWallet={ () => this._connectWallet() }
+    //       networkError={ this.state.networkError }
+    //       dismiss={ () => this._dismissNetworkError() }
+    //     />
+    //   );
+    // }
 
     // If the token data or the user's balance hasn't loaded yet, we show
     // a loading component.
-    if (!this.state.tokenData || !this.state.balance) {
-      return <Loading />;
-    }
+    // if (!this.state.tokenData || !this.state.balance) {
+    //   return <Loading />;
+    // }
 
     return (<>
-      <Container maxW="100%" backgroundColor="gray.100">
-        <Navbar maxW="100%" selectedAddress={ this.state.selectedAddress }
-          balance={ this.state.balance }
-          tokenData={ this.state.tokenData }>
+      <Box backgroundColor="gray.200">
+        <Container maxW="100%" >
+          <Navbar maxW="100%" selectedAddress={ this.state.selectedAddress }
+            balance={ this.state.balance }
+            tokenData={ this.state.tokenData }
+            ConnectWalletBtn={ <ConnectWallet
+              connectWallet={ () => this._connectWallet() }
+              networkError={ this.state.networkError }
+              dismiss={ () => this._dismissNetworkError() }
+            /> }>
 
-        </Navbar>
-        <CourseList></CourseList>
-      </Container>
+          </Navbar>
+          <CourseList selectedAddress={ this.state.selectedAddress }></CourseList>
+        </Container>
+      </Box>
 
     </>)
 

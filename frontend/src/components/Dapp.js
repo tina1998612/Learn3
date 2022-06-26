@@ -5,36 +5,23 @@ import { ethers } from "ethers";
 
 // We import the contract's artifacts and address here, as we are going to be
 // using them with ethers
-import TokenArtifact from "../contracts/Token.json";
-import CourseFactoryArtifact from "../contracts/CourseFactory.json";
 import contractAddress from "../contracts/contract-address.json";
+import CourseFactoryArtifact from "../contracts/CourseFactory.json";
+import TokenArtifact from "../contracts/Token.json";
 
 // All the logic of this dapp is contained in the Dapp component.
 // These other components are just presentational ones: they don't have any
 // logic. They just render HTML.
-import { NoWalletDetected } from "./NoWalletDetected";
 import { ConnectWallet } from "./ConnectWallet";
-import { Loading } from "./Loading";
-import { Transfer } from "./Transfer";
-import { TransactionErrorMessage } from "./TransactionErrorMessage";
-import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
+import { NoWalletDetected } from "./NoWalletDetected";
+import { TransactionErrorMessage } from "./TransactionErrorMessage";
+import { Transfer } from "./Transfer";
+import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 
+import { Box, Container } from "@chakra-ui/react";
 import { CourseList } from "./CourseList";
-import { Taskboard } from "./Taskboard";
-import {
-  Container,
-  Flex,
-  Box,
-  Tabs,
-  TabList,
-  TabPanels,
-  TabPanel,
-  Tab,
-  Center,
-} from "@chakra-ui/react";
 import { Navbar } from "./Navbar";
-import { Popup } from "./Popup";
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
 // If you are using MetaMask, be sure to change the Network id to 1337.
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
@@ -265,7 +252,7 @@ export class Dapp extends React.Component {
     // Fetching the token data and the user's balance are specific to this
     // sample project, but you can reuse the same initialization pattern.
     this._initializeEthers();
-    this._getTokenData();
+    // this._getTokenData();
     this._startPollingData();
   }
 
@@ -296,12 +283,12 @@ export class Dapp extends React.Component {
   // initialize the app, as we do with the token data.
   _startPollingData() {
     this._pollDataInterval = setInterval(() => {
-      this._updateBalance();
+      // this._updateBalance();
       this._updateCourseList();
     }, 1000);
 
     // We run it once immediately so we don't have to wait for it
-    this._updateBalance();
+    // this._updateBalance();
     this._updateCourseList();
   }
 
@@ -324,6 +311,7 @@ export class Dapp extends React.Component {
     this.setState({ balance });
   }
   async _updateCourseList() {
+    if (!this._courseFactory) return;
     const courses = await this._courseFactory.courses();
     this.setState({ courses });
   }

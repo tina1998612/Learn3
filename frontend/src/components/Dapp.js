@@ -24,6 +24,7 @@ import { Box, Container } from "@chakra-ui/react";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { CourseList } from "./CourseList";
 import { Navbar } from "./Navbar";
+
 // import { OpenSeaSDK, Network } from "opensea-js";
 // This is the Hardhat Network id, you might change it in the hardhat.config.js.
 // If you are using MetaMask, be sure to change the Network id to 1337.

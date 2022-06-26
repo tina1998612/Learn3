@@ -1,5 +1,8 @@
 // This is a script for deploying your contracts. You can adapt it to deploy
 // yours, or create new ones.
+const fs = require("fs");
+const contractsDir = __dirname + "/../frontend/src/contracts";
+
 async function main() {
   // This is just a convenience check
   if (network.name === "hardhat") {
@@ -27,12 +30,18 @@ async function main() {
 
   // We also save the contract's artifacts and address in the frontend directory
   saveFrontendFiles(courseFactory);
+
+  fs.writeFileSync(
+    contractsDir + "/Course.json",
+    JSON.stringify(artifacts.readArtifactSync("Course"), null, 2)
+  );
+  fs.writeFileSync(
+    contractsDir + "/QnABoard.json",
+    JSON.stringify(artifacts.readArtifactSync("QnABoard"), null, 2)
+  );
 }
 
 function saveFrontendFiles(courseFactory) {
-  const fs = require("fs");
-  const contractsDir = __dirname + "/../frontend/src/contracts";
-
   if (!fs.existsSync(contractsDir)) {
     fs.mkdirSync(contractsDir);
   }

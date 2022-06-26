@@ -6,7 +6,6 @@ import "./Course.sol";
 
 contract CourseFactory is Ownable {
     Course[] public courses;
-    uint public courseCnt;
 
     function createCourse(
         string memory _name,
@@ -23,8 +22,11 @@ contract CourseFactory is Ownable {
     ) external returns (address) {
         Course c = new Course(_name, _symbol, _price, _baseTokenURI, _isCrowdfund, _crowdfundPeriod, _crowdfundGoalStudentCount, _refundPeriod, _tutors, _tutorsPercent, _QnABoardShare);
         courses.push(c);
-        courseCnt++;
         return address(c);
+    }
+
+    function getCourseCount () external view returns (uint) {
+        return courses.length;
     }
 
     function withdraw() external onlyOwner {

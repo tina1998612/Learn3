@@ -1,13 +1,13 @@
 import React from "react";
 
 // We'll use ethers to interact with the Ethereum network and our contract
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 
 // We import the contract's artifacts and address here, as we are going to be
 // using them with ethers
 import contractAddress from "../contracts/contract-address.json";
+import CourseArtifact from "../contracts/Course.json";
 import CourseFactoryArtifact from "../contracts/CourseFactory.json";
-import TokenArtifact from "../contracts/Token.json";
 
 // All the logic of this dapp is contained in the Dapp component.
 // These other components are just presentational ones: they don't have any
@@ -109,11 +109,13 @@ export class Dapp extends React.Component {
                   dismiss={() => this._dismissNetworkError()}
                 />
               }
-              createCourse={() => this._createCourse()}
+              createCourse={(data) => this._createCourse(data)}
             ></Navbar>
 
             <CourseList
-              selectedAddress={this.state.selectedAddress}
+              purchaseCourse={(selectedCourse) =>
+                this._purchaseCourse(selectedCourse)
+              }
             ></CourseList>
           </Container>
         </Box>
@@ -269,6 +271,7 @@ export class Dapp extends React.Component {
       CourseFactoryArtifact.abi,
       this._provider.getSigner(0)
     );
+
     window._courseFactory = this._courseFactory;
   }
 
@@ -310,11 +313,20 @@ export class Dapp extends React.Component {
   }
   async _updateCourseList() {
     if (!this._courseFactory) return;
-    const courseCnt = await this._courseFactory.courseCnt();
+    const courseCnt = await this._courseFactory.functions.getCourseCount();
+    console.log(parseInt(courseCnt));
     let courses = [];
-    for (let i = 0; i < courseCnt; i++) {
-      courses.push(await this._courseFactory.courses(i));
+    for (let i = 0; i < parseInt(courseCnt); i++) {
+      let contractAddr = await this._courseFactory.courses(i);
+      courses.push(
+        new ethers.Contract(
+          contractAddr,
+          CourseArtifact.abi,
+          this._provider.getSigner(0)
+        )
+      );
     }
+    console.log(courses);
     this.setState({ courses });
   }
 
@@ -359,7 +371,7 @@ export class Dapp extends React.Component {
 
       // If we got here, the transaction was successful, so you may want to
       // update your state. Here, we update the user's balance.
-      await this._updateBalance();
+      // await this._updateBalance();
     } catch (error) {
       // We check the error code to see if this error was produced because the
       // user rejected a tx. If that's the case, we do nothing.
@@ -377,12 +389,77 @@ export class Dapp extends React.Component {
       this.setState({ txBeingSent: undefined });
     }
   }
-  // TODO
-  async _createCourse() {
+  async _purchaseCourse(selectedCourse) {
+    try {
+      this._dismissTransactionError();
+      console.log("purchasing course", selectedCourse.address);
+      let _course = new ethers.Contract(
+        selectedCourse.address,
+        CourseArtifact.abi,
+        this._provider.getSigner(0)
+      );
+      const tx = await _course.enroll();
+      //  const tx = await this._course.createCourse(
+      //    data.name,
+      //    data.symbol,
+      //    BigNumber.from(data.price),
+      //    data._baseTokenURI,
+      //    data._isCrowdfund == "true",
+      //    BigNumber.from(data._crowdfundPeriod),
+      //    BigNumber.from(data._crowdfundGoalStudentCount),
+      //    BigNumber.from(data._refundPeriod),
+      //    data._tutors.split(","),
+      //    data._tutorsPercent.split(","),
+      //    BigNumber.from(data._QnABoardShare)
+      //  );
+      this.setState({ txBeingSent: tx.hash });
+
+      const receipt = await tx.wait();
+
+      if (receipt.status === 0) {
+        throw new Error("Transaction failed");
+      }
+    } catch (error) {
+      if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
+        return;
+      }
+
+      console.error(error);
+      this.setState({ transactionError: error });
+    } finally {
+      this.setState({ txBeingSent: undefined });
+    }
+  }
+  async _createCourse(data) {
     try {
       this._dismissTransactionError();
 
-      const tx = await this._courseFactory.createCourse();
+      console.log(
+        data.name,
+        data.symbol,
+        // BigNumber.from(data.price),
+        data._baseTokenURI,
+        data._isCrowdfund == "true",
+        // BigNumber.from(data._crowdfundPeriod),
+        BigNumber.from(data._crowdfundGoalStudentCount),
+        BigNumber.from(data._refundPeriod),
+        data._tutors.split(","),
+        data._tutorsPercent.split(","),
+        BigNumber.from(data._QnABoardShare)
+      );
+      const tx = await this._courseFactory.createCourse(
+        data.name,
+        data.symbol,
+        BigNumber.from(data.price),
+        data._baseTokenURI,
+        data._isCrowdfund == "true",
+        BigNumber.from(data._crowdfundPeriod),
+        BigNumber.from(data._crowdfundGoalStudentCount),
+        BigNumber.from(data._refundPeriod),
+        data._tutors.split(","),
+        data._tutorsPercent.split(","),
+        BigNumber.from(data._QnABoardShare)
+      );
       this.setState({ txBeingSent: tx.hash });
 
       const receipt = await tx.wait();
@@ -391,7 +468,7 @@ export class Dapp extends React.Component {
         throw new Error("Transaction failed");
       }
 
-      await this._updateBalance();
+      // await this._updateBalance();
     } catch (error) {
       if (error.code === ERROR_CODE_TX_REJECTED_BY_USER) {
         return;
@@ -431,12 +508,18 @@ export class Dapp extends React.Component {
 
   // This method checks if Metamask selected network is Localhost:8545
   _checkNetwork() {
-    if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
+    // if (window.ethereum.networkVersion === HARDHAT_NETWORK_ID) {
+    //   return true;
+    // }
+
+    // this.setState({
+    //   networkError: "Please connect Metamask to Localhost:8545",
+    // });
+    if (window.ethereum.networkVersion === "4") {
       return true;
     }
-
     this.setState({
-      networkError: "Please connect Metamask to Localhost:8545",
+      networkError: "Please connect Metamask to Rinkeby",
     });
 
     return false;

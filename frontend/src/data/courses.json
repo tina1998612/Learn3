@@ -8,7 +8,8 @@
     "price": 10,
     "totalFunding": 200,
     "fund": 100,
-    "purchased": false
+    "purchased": false,
+    "address": "0xBA12646CC07ADBe43F8bD25D83FB628D29C8A762"
   },
   {
     "id": 1,
@@ -29,7 +30,8 @@
     "totalFunding": 200,
     "fund": 100,
     "purchased": false
-  },{
+  },
+  {
     "id": 3,
     "name": "Defi 101 Starter Course",
     "cover": "https://warehouse.kaik.network/cdn-cgi/image/width=660,quality=80/course/cover_photo/db62cfaa-8ee5-4518-a60b-70bbbca126f3/3376027c-7c32-41f4-9dca-4629e4931084.jpeg",

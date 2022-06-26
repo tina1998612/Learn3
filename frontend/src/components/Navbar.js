@@ -22,7 +22,9 @@ export let Navbar = ({
           <Image src="Learn3-02.png" h="55"></Image>
         </Box>
         <Spacer></Spacer>
-        {selectedAddress && <Popup createCourse={() => createCourse()}></Popup>}
+        {selectedAddress && (
+          <Popup createCourse={(data) => createCourse(data)}></Popup>
+        )}
         <Flex>
           {selectedAddress && (
             <b>

@@ -1,32 +1,21 @@
 import {
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  useDisclosure,
-  ModalFooter,
-} from "@chakra-ui/react";
-import {
   FormControl,
   FormLabel,
-  FormErrorMessage,
-  FormHelperText,
   Input,
-} from "@chakra-ui/react";
-import {
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
-  NumberIncrementStepper,
-  NumberDecrementStepper,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
 import { useState } from "react";
-export const Popup = () => {
+export const Popup = ({ createCourse }) => {
   const {
     handleSubmit,
     register,
@@ -35,8 +24,9 @@ export const Popup = () => {
   } = useForm({});
   let [newCourse, setNewCourse] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
-  function createCourse(data) {
+  function _createCourse(data) {
     console.log(data);
+    createCourse(data);
     // var data = new FormData(evt.target);
     // let formObject = Object.fromEntries(data.entries());
     // console.log(formObject);
@@ -60,7 +50,7 @@ export const Popup = () => {
           <ModalHeader>Create Course</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={handleSubmit(createCourse)}>
+            <form onSubmit={handleSubmit(_createCourse)}>
               <FormControl>
                 <FormLabel htmlFor="Name">Name</FormLabel>
                 <Input
@@ -68,6 +58,7 @@ export const Popup = () => {
                     required: "This is required",
                   })}
                   placeholder="Name"
+                  value="Name"
                 />
               </FormControl>
               <FormControl>
@@ -78,6 +69,7 @@ export const Popup = () => {
                   })}
                   id="symbol"
                   type="symbol"
+                  value="SSS"
                 />
               </FormControl>
               <FormControl>
@@ -88,6 +80,7 @@ export const Popup = () => {
                   })}
                   id="price"
                   type="number"
+                  value="0"
                 />
               </FormControl>
               <FormControl>
@@ -97,6 +90,7 @@ export const Popup = () => {
                     required: "This is required",
                   })}
                   id="_baseTokenURI"
+                  value="https://"
                 />
               </FormControl>
               <FormControl>
@@ -106,6 +100,7 @@ export const Popup = () => {
                     required: "This is required",
                   })}
                   id="_isCrowdfund"
+                  value="true"
                 />
               </FormControl>
               <FormControl>
@@ -117,6 +112,7 @@ export const Popup = () => {
                     required: "This is required",
                   })}
                   id="_crowdfundPeriod"
+                  value="111"
                 />
               </FormControl>
 
@@ -131,19 +127,27 @@ export const Popup = () => {
                   })}
                   id="_crowdfundGoalStudentCount"
                   type="number"
+                  value="111"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="_refundPeriod">_refundPeriod</FormLabel>
-                <Input id="_refundPeriod" />
+                <Input
+                  {...register("_refundPeriod", {
+                    required: "This is required",
+                  })}
+                  id="_refundPeriod"
+                  value="111"
+                />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="tutor">tutor</FormLabel>
                 <Input
-                  {...register("tutor", {
+                  {...register("_tutors", {
                     required: "This is required",
                   })}
-                  id="tutor"
+                  id="_tutors"
+                  value="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
                 />
               </FormControl>
               <FormControl>
@@ -153,6 +157,17 @@ export const Popup = () => {
                     required: "This is required",
                   })}
                   id="_tutorsPercent"
+                  value="100"
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="_QnABoardShare">_QnABoardShare</FormLabel>
+                <Input
+                  {...register("_QnABoardShare", {
+                    required: "This is required",
+                  })}
+                  id="_QnABoardShare"
+                  value="20"
                 />
               </FormControl>
               <Button

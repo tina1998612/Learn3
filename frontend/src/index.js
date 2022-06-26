@@ -7,6 +7,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import "./style.css"
 // We import bootstrap here, but you can remove if you want
 import "bootstrap/dist/css/bootstrap.css";
 

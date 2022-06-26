@@ -5,7 +5,7 @@ import { CourseView } from "./CourseView"
 import React, { useState, useEffect } from 'react'
 import { Fade } from '@chakra-ui/react'
 
-export const CourseList = () => {
+export const CourseList = (selectedAddress) => {
     let [selectedCourse, setSelectedCourse] = useState(null)
 
     return <>
@@ -26,6 +26,7 @@ export const CourseList = () => {
                                 handleOpenCourse={ () => {
                                     setSelectedCourse(course)
                                 } }>
+
 
                             </Course>) }
                     </SimpleGrid>

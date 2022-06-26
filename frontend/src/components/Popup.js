@@ -25,8 +25,23 @@ export const Popup = ({ createCourse }) => {
   let [newCourse, setNewCourse] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   function _createCourse(data) {
-    console.log(data);
-    createCourse(data);
+    const newData = {
+      name: data.name || "Course101",
+      price: data.price || 0,
+      symbol: data.symbol || "CRS",
+      _baseTokenURI:
+        data._baseTokenURI ||
+        "ipfs://QmVmhJLwZLTvVN54dp2jeSVRsX7epY8CnuWbr2iAwnWtty/",
+      _QnABoardShare: data._QnABoardShare || "20",
+      _crowdfundGoalStudentCount: data._crowdfundGoalStudentCount || "3",
+      _crowdfundPeriod: data._crowdfundPeriod || 100000,
+      _isCrowdfund: data._isCrowdfund || true,
+      _refundPeriod: data._refundPeriod || 100000,
+      _tutors: data._tutors || "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+      _tutorsPercent: data._tutorsPercent || "100",
+    };
+    // console.log(newData);
+    createCourse(newData);
     // var data = new FormData(evt.target);
     // let formObject = Object.fromEntries(data.entries());
     // console.log(formObject);
@@ -55,52 +70,51 @@ export const Popup = ({ createCourse }) => {
                 <FormLabel htmlFor="Name">Name</FormLabel>
                 <Input
                   {...register("name", {
-                    required: "This is required",
+                    required: false,
                   })}
-                  placeholder="Name"
-                  value="Name"
+                  placeholder="Course101"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="symbol">symbol</FormLabel>
                 <Input
                   {...register("symbol", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="symbol"
                   type="symbol"
-                  value="SSS"
+                  placeholder="CRS"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="price">price</FormLabel>
                 <Input
                   {...register("price", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="price"
                   type="number"
-                  value="0"
+                  placeholder="0"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="_baseTokenURI">_baseTokenURI</FormLabel>
                 <Input
                   {...register("_baseTokenURI", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="_baseTokenURI"
-                  value="ipfs://QmVmhJLwZLTvVN54dp2jeSVRsX7epY8CnuWbr2iAwnWtty/"
+                  placeholder="ipfs://QmVmhJLwZLTvVN54dp2jeSVRsX7epY8CnuWbr2iAwnWtty/"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="_isCrowdfund">_isCrowdfund</FormLabel>
                 <Input
                   {...register("_isCrowdfund", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="_isCrowdfund"
-                  value="true"
+                  placeholder="true"
                 />
               </FormControl>
               <FormControl>
@@ -109,10 +123,10 @@ export const Popup = ({ createCourse }) => {
                 </FormLabel>
                 <Input
                   {...register("_crowdfundPeriod", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="_crowdfundPeriod"
-                  value="111"
+                  placeholder="100000"
                 />
               </FormControl>
 
@@ -123,51 +137,51 @@ export const Popup = ({ createCourse }) => {
 
                 <Input
                   {...register("_crowdfundGoalStudentCount", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="_crowdfundGoalStudentCount"
                   type="number"
-                  value="111"
+                  placeholder="3"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="_refundPeriod">_refundPeriod</FormLabel>
                 <Input
                   {...register("_refundPeriod", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="_refundPeriod"
-                  value="111"
+                  placeholder="100000"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="tutor">tutor</FormLabel>
                 <Input
                   {...register("_tutors", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="_tutors"
-                  value="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
+                  placeholder="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="_tutorsPercent">_tutorsPercent</FormLabel>
                 <Input
                   {...register("_tutorsPercent", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="_tutorsPercent"
-                  value="100"
+                  placeholder="100"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="_QnABoardShare">_QnABoardShare</FormLabel>
                 <Input
                   {...register("_QnABoardShare", {
-                    required: "This is required",
+                    required: false,
                   })}
                   id="_QnABoardShare"
-                  value="20"
+                  placeholder="20"
                 />
               </FormControl>
               <Button

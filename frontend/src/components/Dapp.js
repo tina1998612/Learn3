@@ -326,7 +326,14 @@ export class Dapp extends React.Component {
         this._provider.getSigner(0)
       );
       const _name = await _courseContract.name();
+      // console.log(_courseContract);
       const _price = await _courseContract.price();
+      const _goalFund = await _courseContract.crowdfundGoalStudentCount();
+      const _currentFund = await _courseContract.totalSupply();
+      const _purchased = await _courseContract.balanceOf(
+        this.state.selectedAddress
+      );
+      // console.log(_purchased);
       courses.push({
         id: courses.length,
         name: _name,
@@ -334,9 +341,9 @@ export class Dapp extends React.Component {
         description: "This is a course you just created.",
         status: "funding",
         price: _price.toNumber(),
-        totalFunding: 200,
-        fund: 100,
-        purchased: false,
+        totalFunding: _goalFund.toNumber(),
+        fund: _currentFund.toNumber(),
+        purchased: _purchased.toNumber() != 0,
         address: contractAddr,
       });
     }
@@ -447,7 +454,7 @@ export class Dapp extends React.Component {
   async _createCourse(data) {
     try {
       this._dismissTransactionError();
-      console.log("creating course", data);
+      // console.log("creating course", data);
       // console.log(
       //   data.name,
       //   data.symbol,

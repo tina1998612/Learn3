@@ -31,6 +31,7 @@ deploy your contract:
 
 ```sh
 npx hardhat run scripts/deploy.js --network localhost
+npx hardhat run scripts/deploy.js --network rinkeby
 ```
 
 Finally, we can run the frontend with:

@@ -26,8 +26,6 @@ export const Popup = ({ createCourse }) => {
   let [newCourse, setNewCourse] = useState({});
   const { isOpen, onOpen, onClose } = useDisclosure();
   function _createCourse(data) {
-    console.log("hi", data.price);
-
     const newData = {
       name: data.name || "Course101",
       price: data.price ? ethers.utils.parseEther(data.price) : 0,

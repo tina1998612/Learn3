@@ -65,20 +65,16 @@ export const CourseView = ({
           ) }
           <br />
           { course.price != 0 && (
-            <Button mt="5" colorScheme="yellow" onClick={ handleRevenue }>
-              { " " }
-              Distribute Revenue
-            </Button>
+            <>
+              <Button mt="5" colorScheme="yellow" onClick={ handleRevenue }>
+                { " " }
+                Distribute Revenue
+              </Button>
+              <br />
+              <br />
+              <p>(Needs to wait until the refund period ends.)</p>
+            </>
           ) }
-          <br />
-          <br />
-          (Needs to wait until the refund period ends.)
-          {/* {course.purchased && (
-            <Button mt="5" colorScheme="yellow" onClick={handleGift}>
-              {" "}
-              Send as Gift
-            </Button>
-          )} */}
         </Box>
         <Box flex="8" pt="15" px="5">
           <Flex

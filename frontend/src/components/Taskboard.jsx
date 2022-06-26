@@ -1,5 +1,5 @@
 import { Box, Input, Container, AccordionItem, Accordion, AccordionButton, AccordionIcon, AccordionPanel, Text, Image, Button, Flex, Progress, Spacer, Center, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { LockIcon, StarIcon } from "@chakra-ui/icons"
 import { Fade } from '@chakra-ui/react'
 let questions = [
@@ -9,10 +9,12 @@ let questions = [
         solved: true,
         answers: [
             {
+                questionId: 0,
                 id: 0,
                 content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 bestAnswer: true
             }, {
+                questionId: 0,
                 id: 1,
                 content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 bestAnswer: false
@@ -21,15 +23,17 @@ let questions = [
         reward: 3,
         rewardUnit: "LLL"
     }, {
-        id: 0,
+        id: 1,
         question: "Question 2",
         solved: false,
         answers: [
             {
+                questionId: 1,
                 id: 0,
                 content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 bestAnswer: false
             }, {
+                questionId: 1,
                 id: 1,
                 content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
                 bestAnswer: false
@@ -41,16 +45,24 @@ let questions = [
 ]
 
 export const Taskboard = ({ course, handleBack, handlePurchase, }) => {
+    let [currentQuestion, setCurrentQuestion] = useState("")
+    let [currentQuestionPrice, setCurrentQuestionPrice] = useState(3)
     let handleAddQuestion = () => {
-
+        console.log("submit question", currentQuestion, currentQuestionPrice)
+        setCurrentQuestion("")
+    }
+    let answerQuestion = () => {
+        // console.log("hi")
     }
     return <Container maxW="container.lg" minH="100vh">
         <Flex w="100%">
-            <Input placeholder="ask something"></Input>
-            <Button onClick={ handleAddQuestion() }>Ask Question</Button>
+            <Input flex="10" placeholder="ask something" value={ currentQuestion } onChange={ e => setCurrentQuestion(e.target.value) }></Input>
+            <Input flex="1" type="number" placeholder="price" value={ currentQuestionPrice } onChange={ e => setCurrentQuestionPrice(e.target.value) }></Input>
+
+            <Button onClick={ () => handleAddQuestion() }>Ask Question</Button>
         </Flex>
         <Accordion mt={ 2 } defaultIndex={ Array.from({ length: questions.length }).map((d, i) => i) } allowMultiple>
-            { questions.map(({ question, answers, reward, rewardUnit }, i) => <AccordionItem>
+            { questions.map(({ question, answers, reward, rewardUnit }, i) => <AccordionItem key={ i }>
                 <Box backgroundColor="white" shadow="xl" borderRadius="50" mt="1" overflow="hidden">
                     <AccordionButton >
                         <Box flex='1' textAlign='left' p={ 1 }>

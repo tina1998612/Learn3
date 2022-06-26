@@ -54,7 +54,16 @@ export let Navbar = ({
           backgroundColor="grey.100"
           ml={ 4 }
           onClick={ () => window.open("https://www.youtube.com/watch?v=tWbLXoEPKnc") }
-        > Demo Video
+        > Video
+        </Button> }
+        { !selectedAddress && <Button
+          borderRadius={ 50 }
+          px={ 6 }
+          type="button"
+          backgroundColor="grey.100"
+          ml={ 4 }
+          onClick={ () => window.open("Learn3.pdf") }
+        > Slides
         </Button> }
       </Flex>
     </Box >

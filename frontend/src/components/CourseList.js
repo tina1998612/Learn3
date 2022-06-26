@@ -1,4 +1,4 @@
-import { Container, SimpleGrid, Text, Button, Flex, Box } from "@chakra-ui/react";
+import { Container, SimpleGrid, Text, Button, Flex, Box, Image } from "@chakra-ui/react";
 import { Course } from "./CourseListItem";
 import courseMockData from "../data/courses.json"
 import { CourseView } from "./CourseView"
@@ -17,20 +17,22 @@ export const CourseList = (selectedAddress) => {
                         <CourseView course={ selectedCourse }
                             handleBack={ () => setSelectedCourse(null) } />
                     </> }
-                { !selectedCourse && <Container maxW='container.xl' p="5" minH="100vh" >
-                    <Text fontSize="5xl" mb={ 5 } >Course List</Text>
-                    <SimpleGrid w="100%" columns={ [1, 1, 2, 3] } spacing={ 8 }>
-                        { courseMockData.map((course, courseId) =>
-                            <Course course={ course }
-                                key={ courseId }
-                                handleOpenCourse={ () => {
-                                    setSelectedCourse(course)
-                                } }>
+                { !selectedCourse && <>
+                    {/* <Image src="Learn3-03.jpg"></Image> */ }
+                    <Container maxW='container.xl' p="5" minH="100vh" >
+                        {/* <Text fontSize="4xl" mb={ 5 } >Course List</Text> */ }
+                        <SimpleGrid w="100%" columns={ [1, 1, 2, 3] } spacing={ 8 }>
+                            { courseMockData.map((course, courseId) =>
+                                <Course course={ course }
+                                    key={ courseId }
+                                    handleOpenCourse={ () => {
+                                        setSelectedCourse(course)
+                                    } }>
 
 
-                            </Course>) }
-                    </SimpleGrid>
-                </Container>
+                                </Course>) }
+                        </SimpleGrid>
+                    </Container></>
                 }
             </Container>
         </Fade>

@@ -42,7 +42,7 @@ export const Popup = ({ createCourse }) => {
       _tutorsPercent: data._tutorsPercent || "100",
     };
     // console.log(newData);
-    createCourse(newData);
+    createCourse(newData, () => { onClose() });
     // var data = new FormData(evt.target);
     // let formObject = Object.fromEntries(data.entries());
     // console.log(formObject);
@@ -50,38 +50,38 @@ export const Popup = ({ createCourse }) => {
   return (
     <>
       <Button
-        borderRadius={50}
+        borderRadius={ 50 }
         colorScheme="yellow"
-        mr={4}
-        px={8}
+        mr={ 4 }
+        px={ 8 }
         type="button"
-        onClick={onOpen}
+        onClick={ onOpen }
       >
-        {" "}
+        { " " }
         CreateCourse
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={ isOpen } onClose={ onClose }>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Create Course</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form onSubmit={handleSubmit(_createCourse)}>
+            <form onSubmit={ handleSubmit(_createCourse) }>
               <FormControl>
                 <FormLabel htmlFor="Name">Name</FormLabel>
                 <Input
-                  {...register("name", {
+                  { ...register("name", {
                     required: false,
-                  })}
+                  }) }
                   placeholder="Course101"
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="symbol">symbol</FormLabel>
                 <Input
-                  {...register("symbol", {
+                  { ...register("symbol", {
                     required: false,
-                  })}
+                  }) }
                   id="symbol"
                   type="symbol"
                   placeholder="CRS"
@@ -90,9 +90,9 @@ export const Popup = ({ createCourse }) => {
               <FormControl>
                 <FormLabel htmlFor="price">price</FormLabel>
                 <Input
-                  {...register("price", {
+                  { ...register("price", {
                     required: false,
-                  })}
+                  }) }
                   id="price"
                   type="float"
                   placeholder="0"
@@ -101,9 +101,9 @@ export const Popup = ({ createCourse }) => {
               <FormControl>
                 <FormLabel htmlFor="_baseTokenURI">_baseTokenURI</FormLabel>
                 <Input
-                  {...register("_baseTokenURI", {
+                  { ...register("_baseTokenURI", {
                     required: false,
-                  })}
+                  }) }
                   id="_baseTokenURI"
                   placeholder="ipfs://QmVmhJLwZLTvVN54dp2jeSVRsX7epY8CnuWbr2iAwnWtty/"
                 />
@@ -111,9 +111,9 @@ export const Popup = ({ createCourse }) => {
               <FormControl>
                 <FormLabel htmlFor="_isCrowdfund">_isCrowdfund</FormLabel>
                 <Input
-                  {...register("_isCrowdfund", {
+                  { ...register("_isCrowdfund", {
                     required: false,
-                  })}
+                  }) }
                   id="_isCrowdfund"
                   placeholder="true"
                 />
@@ -123,9 +123,9 @@ export const Popup = ({ createCourse }) => {
                   _crowdfundPeriod
                 </FormLabel>
                 <Input
-                  {...register("_crowdfundPeriod", {
+                  { ...register("_crowdfundPeriod", {
                     required: false,
-                  })}
+                  }) }
                   id="_crowdfundPeriod"
                   placeholder="100000"
                 />
@@ -137,9 +137,9 @@ export const Popup = ({ createCourse }) => {
                 </FormLabel>
 
                 <Input
-                  {...register("_crowdfundGoalStudentCount", {
+                  { ...register("_crowdfundGoalStudentCount", {
                     required: false,
-                  })}
+                  }) }
                   id="_crowdfundGoalStudentCount"
                   type="number"
                   placeholder="3"
@@ -148,9 +148,9 @@ export const Popup = ({ createCourse }) => {
               <FormControl>
                 <FormLabel htmlFor="_refundPeriod">_refundPeriod</FormLabel>
                 <Input
-                  {...register("_refundPeriod", {
+                  { ...register("_refundPeriod", {
                     required: false,
-                  })}
+                  }) }
                   id="_refundPeriod"
                   placeholder="100000"
                 />
@@ -158,9 +158,9 @@ export const Popup = ({ createCourse }) => {
               <FormControl>
                 <FormLabel htmlFor="tutor">tutor</FormLabel>
                 <Input
-                  {...register("_tutors", {
+                  { ...register("_tutors", {
                     required: false,
-                  })}
+                  }) }
                   id="_tutors"
                   placeholder="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512"
                 />
@@ -168,9 +168,9 @@ export const Popup = ({ createCourse }) => {
               <FormControl>
                 <FormLabel htmlFor="_tutorsPercent">_tutorsPercent</FormLabel>
                 <Input
-                  {...register("_tutorsPercent", {
+                  { ...register("_tutorsPercent", {
                     required: false,
-                  })}
+                  }) }
                   id="_tutorsPercent"
                   placeholder="100"
                 />
@@ -178,23 +178,23 @@ export const Popup = ({ createCourse }) => {
               <FormControl>
                 <FormLabel htmlFor="_QnABoardShare">_QnABoardShare</FormLabel>
                 <Input
-                  {...register("_QnABoardShare", {
+                  { ...register("_QnABoardShare", {
                     required: false,
-                  })}
+                  }) }
                   id="_QnABoardShare"
                   placeholder="20"
                 />
               </FormControl>
               <Button
-                mt={5}
+                mt={ 5 }
                 w="100%"
-                borderRadius={50}
+                borderRadius={ 50 }
                 colorScheme="yellow"
-                mr={4}
-                px={8}
+                mr={ 4 }
+                px={ 8 }
                 type="submit"
               >
-                {" "}
+                { " " }
                 Create
               </Button>
             </form>
@@ -204,7 +204,7 @@ export const Popup = ({ createCourse }) => {
             {/* <Button colorScheme='blue' mr={ 3 } onClick={ onClose }>
                             Close
                         </Button> */}
-            {/* <Button variant='ghost'>Secondary Action</Button> */}
+            {/* <Button variant='ghost'>Secondary Action</Button> */ }
           </ModalFooter>
         </ModalContent>
       </Modal>

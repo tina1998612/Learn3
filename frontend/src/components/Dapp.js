@@ -101,28 +101,34 @@ export class Dapp extends React.Component {
           <Container maxW="100%">
             <Navbar
               maxW="100%"
-              selectedAddress={this.state.selectedAddress}
-              balance={this.state.balance}
-              tokenData={this.state.tokenData}
+              selectedAddress={ this.state.selectedAddress }
+              balance={ this.state.balance }
+              tokenData={ this.state.tokenData }
+              disconnectWallet={ () => {
+                console.log("hi")
+                this.setState({ selectedAddress: undefined })
+                this._resetState()
+              } }
               ConnectWalletBtn={
                 <ConnectWallet
-                  connectWallet={() => this._connectWallet()}
-                  networkError={this.state.networkError}
-                  dismiss={() => this._dismissNetworkError()}
+                  connectWallet={ () => this._connectWallet() }
+                  networkError={ this.state.networkError }
+                  dismiss={ () => this._dismissNetworkError() }
+
                 />
               }
-              createCourse={(data) => this._createCourse(data)}
+              createCourse={ (data) => this._createCourse(data) }
             ></Navbar>
 
             <CourseList
-              purchaseCourse={(selectedCourse) =>
+              purchaseCourse={ (selectedCourse) =>
                 this._purchaseCourse(selectedCourse)
               }
-              coursesJsonArr={this.state.courses}
-              refundCourse={(selectedCourse) =>
+              coursesJsonArr={ this.state.courses }
+              refundCourse={ (selectedCourse) =>
                 this._refundCourse(selectedCourse)
               }
-              giftCourse={(selectedCourse) => this._giftCourse(selectedCourse)}
+              giftCourse={ (selectedCourse) => this._giftCourse(selectedCourse) }
             ></CourseList>
           </Container>
         </Box>
@@ -135,12 +141,12 @@ export class Dapp extends React.Component {
         <div className="row">
           <div className="col-12">
             <h1>
-              {this.state.tokenData.name} ({this.state.tokenData.symbol})
+              { this.state.tokenData.name } ({ this.state.tokenData.symbol })
             </h1>
             <p>
-              Welcome <b>{this.state.selectedAddress}</b>, you have{" "}
+              Welcome <b>{ this.state.selectedAddress }</b>, you have{ " " }
               <b>
-                {this.state.balance.toString()} {this.state.tokenData.symbol}
+                { this.state.balance.toString() } { this.state.tokenData.symbol }
               </b>
               .
             </p>
@@ -156,20 +162,20 @@ export class Dapp extends React.Component {
               for it to be mined.
               If we are waiting for one, we show a message here.
             */}
-            {this.state.txBeingSent && (
-              <WaitingForTransactionMessage txHash={this.state.txBeingSent} />
-            )}
+            { this.state.txBeingSent && (
+              <WaitingForTransactionMessage txHash={ this.state.txBeingSent } />
+            ) }
 
             {/* 
               Sending a transaction can fail in multiple ways. 
               If that happened, we show a message here.
             */}
-            {this.state.transactionError && (
+            { this.state.transactionError && (
               <TransactionErrorMessage
-                message={this._getRpcErrorMessage(this.state.transactionError)}
-                dismiss={() => this._dismissTransactionError()}
+                message={ this._getRpcErrorMessage(this.state.transactionError) }
+                dismiss={ () => this._dismissTransactionError() }
               />
-            )}
+            ) }
           </div>
         </div>
 
@@ -178,9 +184,9 @@ export class Dapp extends React.Component {
             {/*
               If the user has no tokens, we don't show the Transfer form
             */}
-            {this.state.balance.eq(0) && (
-              <NoTokensMessage selectedAddress={this.state.selectedAddress} />
-            )}
+            { this.state.balance.eq(0) && (
+              <NoTokensMessage selectedAddress={ this.state.selectedAddress } />
+            ) }
 
             {/*
               This component displays a form that the user can use to send a 
@@ -188,14 +194,14 @@ export class Dapp extends React.Component {
               The component doesn't have logic, it just calls the transferTokens
               callback.
             */}
-            {this.state.balance.gt(0) && (
+            { this.state.balance.gt(0) && (
               <Transfer
-                transferTokens={(to, amount) =>
+                transferTokens={ (to, amount) =>
                   this._transferTokens(to, amount)
                 }
-                tokenSymbol={this.state.tokenData.symbol}
+                tokenSymbol={ this.state.tokenData.symbol }
               />
-            )}
+            ) }
           </div>
         </div>
       </div>
@@ -496,7 +502,7 @@ export class Dapp extends React.Component {
         this._provider.getSigner(0)
       );
       const _price = await _course.price();
-      const tx = await _course.enroll({ value: _price.toNumber() });
+      const tx = await _course.enroll({ value: _price });
       //  const tx = await this._course.createCourse(
       //    data.name,
       //    data.symbol,
@@ -528,7 +534,7 @@ export class Dapp extends React.Component {
       this.setState({ txBeingSent: undefined });
     }
   }
-  async _createCourse(data) {
+  async _createCourse(data, callback) {
     try {
       this._dismissTransactionError();
       // console.log("creating course", data);
@@ -576,7 +582,9 @@ export class Dapp extends React.Component {
       this.setState({ transactionError: error });
     } finally {
       this.setState({ txBeingSent: undefined });
+      callback && callback()
     }
+
   }
 
   // This method just clears part of the state.

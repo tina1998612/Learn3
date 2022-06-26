@@ -11,9 +11,11 @@ import {
   BreadcrumbItem,
   BreadcrumbLink,
 } from "@chakra-ui/react";
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import React from "react";
 import { LockIcon } from "@chakra-ui/icons";
 import { Fade } from "@chakra-ui/react";
+import { Taskboard } from "./Taskboard.jsx";
 
 export const CourseView = ({
   course,
@@ -97,18 +99,35 @@ export const CourseView = ({
                 </Button>
               </Flex>
             ) : (
-              <Flex direction="column" flex="1">
-                <Text fontSize="3xl" mb="5">
-                  {" "}
-                  Chapter 1
-                </Text>
-                <Image src="https://placekitten.com/1200/360"></Image>
-                <Text mt="3">{course.description}</Text>
-                <Text mt="3">{course.description}</Text>
-                <Image mt="3" src="https://placekitten.com/640/360"></Image>
+              <Tabs>
+                <TabList>
+                  <Tab>Course Conent</Tab>
+                  <Tab>Discussion Task Board</Tab>
+                </TabList>
 
-                <Spacer />
-              </Flex>
+                <TabPanels>
+                  <TabPanel>
+                    <Flex direction="column" flex="1">
+                      <Text fontSize="3xl" mb="5">
+                        {" "}
+                        Chapter 1
+                      </Text>
+                      <Image src="https://placekitten.com/1200/360"></Image>
+                      <Text mt="3">{course.description}</Text>
+                      <Text mt="3">{course.description}</Text>
+                      <Image
+                        mt="3"
+                        src="https://placekitten.com/640/360"
+                      ></Image>
+
+                      <Spacer />
+                    </Flex>
+                  </TabPanel>
+                  <TabPanel>
+                    <Taskboard></Taskboard>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
             )}
           </Flex>
         </Box>

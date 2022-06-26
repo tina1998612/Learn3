@@ -106,6 +106,11 @@ export class Dapp extends React.Component {
               selectedAddress={this.state.selectedAddress}
               balance={this.state.balance}
               tokenData={this.state.tokenData}
+              disconnectWallet={() => {
+                console.log("hi");
+                this.setState({ selectedAddress: undefined });
+                this._resetState();
+              }}
               ConnectWalletBtn={
                 <ConnectWallet
                   connectWallet={() => this._connectWallet()}
@@ -570,7 +575,7 @@ export class Dapp extends React.Component {
       this.setState({ txBeingSent: undefined });
     }
   }
-  async _createCourse(data) {
+  async _createCourse(data, callback) {
     try {
       this._dismissTransactionError();
       // console.log("creating course", data);
@@ -618,6 +623,7 @@ export class Dapp extends React.Component {
       this.setState({ transactionError: error });
     } finally {
       this.setState({ txBeingSent: undefined });
+      callback && callback();
     }
   }
 

@@ -43,8 +43,10 @@ export const Popup = ({ createCourse }) => {
       _tutors: data._tutors || "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
       _tutorsPercent: data._tutorsPercent || "100",
     };
-    console.log(newData);
-    createCourse(newData);
+    // console.log(newData);
+    createCourse(newData, () => {
+      onClose();
+    });
     // var data = new FormData(evt.target);
     // let formObject = Object.fromEntries(data.entries());
     // console.log(formObject);

@@ -65,31 +65,48 @@ export const Popup = () => {
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="symbol">symbol</FormLabel>
-                                <Input id="symbol" type="symbol" />
+                                <Input  { ...register("symbol", {
+                                    required: "This is required",
+                                }) } id="symbol" type="symbol" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="price">price</FormLabel>
-                                <Input id="price" />
+                                <Input
+                                    { ...register("price", {
+                                        required: "This is required",
+                                    }) } id="price" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="_baseTokenURI">_baseTokenURI</FormLabel>
-                                <Input id="_baseTokenURI" />
+                                <Input
+                                    { ...register("_baseTokenURI", {
+                                        required: "This is required",
+                                    }) } id="_baseTokenURI" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="_isCrowdfund">_isCrowdfund</FormLabel>
-                                <Input id="_isCrowdfund" />
+                                <Input
+                                    { ...register("_isCrowdfund", {
+                                        required: "This is required",
+                                    }) } id="_isCrowdfund" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="_crowdfundPeriod">
                                     _crowdfundPeriod
                                 </FormLabel>
-                                <Input id="_crowdfundPeriod" />
+                                <Input
+                                    { ...register("_crowdfundPeriod", {
+                                        required: "This is required",
+                                    }) } id="_crowdfundPeriod" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="_crowdfundGoalStudentCount">
                                     _crowdfundGoalStudentCount
                                 </FormLabel>
-                                <Input id="_crowdfundGoalStudentCount" />
+                                <Input
+                                    { ...register("_crowdfundGoalStudentCount", {
+                                        required: "This is required",
+                                    }) } id="_crowdfundGoalStudentCount" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="_refundPeriod">_refundPeriod</FormLabel>
@@ -97,11 +114,17 @@ export const Popup = () => {
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="tutor">tutor</FormLabel>
-                                <Input id="tutor" />
+                                <Input
+                                    { ...register("tutor", {
+                                        required: "This is required",
+                                    }) } id="tutor" />
                             </FormControl>
                             <FormControl>
                                 <FormLabel htmlFor="_tutorsPercent">_tutorsPercent</FormLabel>
-                                <Input id="_tutorsPercent" />
+                                <Input
+                                    { ...register("_tutorsPercent", {
+                                        required: "This is required",
+                                    }) } id="_tutorsPercent" />
                             </FormControl>
                             <Button
                                 mt={ 5 }
